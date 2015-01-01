@@ -1,3 +1,6 @@
-/**
- * Created by hhy on 14-9-21.
- */
+module.exports = {
+    cookieSecret: 'everyoneAPP',
+    db: 'everyone',
+    host: 'localhost',
+    port: 27017
+};

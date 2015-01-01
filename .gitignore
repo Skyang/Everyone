@@ -64,3 +64,7 @@ crashlytics-build.properties
 sftp-config.json
 
 
+
+node_modules
+npm-debug.log
+mongodb
