@@ -25,7 +25,6 @@ app.use(bodyParser.json());            //json、urlencoded这两行
 app.use(bodyParser.urlencoded({extended: false}));    // 相当于以前的app.use(express.bodyParser())
 app.use(express.static(path.join(__dirname, 'public')));    //设置根目录下的public为存放images,js,css等静态文件的文件夹
 app.use(cookieParser());
-app.use('/', routes);
 app.use(session({
     secret: settings.cookieSecret,
     key: settings.db,
@@ -34,8 +33,12 @@ app.use(session({
     },
     store: new MongoStore({
         db: settings.db
-    })
+    }),
+    resave: false,
+    saveUninitialized: true
 }));
+
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

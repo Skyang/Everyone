@@ -4,9 +4,10 @@
 var express = require('express');
 var crypto = require('crypto');
 var router = express.Router();
-var User = require('../modles/users.js');
+var User = require('../modules/users.js');
 var ejs = require('ejs');
 router.get("/", function (req, res) {
+    console.log(req);
     res.render('index');
 });
 router.get('/login', function (req, res) {
@@ -56,7 +57,7 @@ router.post('/register', function (req, res) {
         email: email
     });
     //检查用户名是否已经存在
-    User.get(newUser.name, function (err, user) {
+    User.getById(newUser.id, function (err, user) {
         if (err) {
             //req.session.messages = ['error', err];
             //req.flash('error', err);
@@ -74,8 +75,10 @@ router.post('/register', function (req, res) {
                 //req.flash('error', err);
                 return res.redirect('/register');//注册失败返回主册页
             }
-            console.log(user);
+            console.log("newUser:"+user);
+            console.log("req.session(Before):"+req.sessions);
             req.session.user = user;//用户信息存入 session
+            console.log("req.session(After):"+req.sessions);
             //req.session.messages = ['success', '注册成功!'];
             //req.flash('success', '注册成功!');
             res.redirect('/');//注册成功后返回主页
