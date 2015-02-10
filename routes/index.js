@@ -7,8 +7,10 @@ var router = express.Router();
 var User = require('../modules/users.js');
 var ejs = require('ejs');
 router.get("/", function (req, res) {
-    console.log(req);
-    res.render('index');
+    console.log(req.session.user);
+    res.render('index',{
+        user:req.session.user
+    });
 });
 router.get('/login', function (req, res) {
     res.render('login');
@@ -18,7 +20,7 @@ router.post('/login', function (req, res) {
     var md5 = crypto.createHash('md5'),
         password = md5.update(req.body.password).digest('hex');
     //检查用户是否存在
-    User.get(req.body.id, function (err, user) {
+    User.getById(req.body.id, function (err, user) {
         console.log(user);
         if (!user) {
             return res.redirect('/login');//用户不存在则跳转到登录页
@@ -86,7 +88,10 @@ router.post('/register', function (req, res) {
     });
 });
 router.get('/logout', function (req, res) {
-    res.render('logout');
+    req.session.user=null;
+    res.render("logout",{
+        user:req.session.user
+    });
 });
 router.get('/blog', function (req, res) {
     res.render('blog');
