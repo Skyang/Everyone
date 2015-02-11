@@ -6,12 +6,22 @@ var crypto = require('crypto');
 var router = express.Router();
 var User = require('../modules/users.js');
 var ejs = require('ejs');
+var checkLogin = function(req,res,next){
+    if(req.session.user){
+        res.render("/redirect",{
+            title:"已登录",
+            status:true
+        });
+    }
+    next();
+};
 router.get("/", function (req, res) {
     console.log(req.session.user);
     res.render('index',{
         user:req.session.user
     });
 });
+router.get('/login', checkLogin);
 router.get('/login', function (req, res) {
     res.render('login');
 });
@@ -96,4 +106,8 @@ router.get('/logout', function (req, res) {
 router.get('/blog', function (req, res) {
     res.render('blog');
 });
+router.get('/profile', function (req, res) {
+    res.render('blog');
+});
+
 module.exports = router;
