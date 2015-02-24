@@ -40,6 +40,17 @@ app.use(session({
 
 app.use('/', routes);
 
+/*app.use(function(req,res,next){
+    var originUrl=req.url;
+    console.log(originUrl+req.session.user);
+    if((originUrl == '/login' && req.session.user)||
+        (originUrl == '/register' && req.session.user)){
+        console.log(originUrl);
+        return res.redirect('/');
+    }
+    next();
+});*/
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');

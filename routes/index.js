@@ -6,24 +6,31 @@ var crypto = require('crypto');
 var router = express.Router();
 var User = require('../modules/users.js');
 var ejs = require('ejs');
-var checkLogin = function(req,res,next){
-    if(req.session.user){
-        res.render("/redirect",{
-            title:"已登录",
-            status:true
-        });
-    }
-    next();
-};
 router.get("/", function (req, res) {
-    console.log(req.session.user);
+    console.log(req.session);
     res.render('index',{
+        title:"Everyone",
         user:req.session.user
     });
 });
-router.get('/login', checkLogin);
-router.get('/login', function (req, res) {
-    res.render('login');
+/*router.get('/login', function (req, res,next) {
+    if(req.session.user){
+        return res.redirect("back");
+    }
+    next();
+});*/
+router.get('/redirect',function(req,res){
+    res.render('redirect',{
+        title:"Everyone"
+    });
+});
+router.get("/login",function(req,res){
+    if(req.session.user){
+        return res.redirect('redirect');
+    }
+    res.render("login",{
+        title:"登录Everyone"
+    });
 });
 router.post('/login', function (req, res) {
     //生成密码的 md5 值
@@ -45,7 +52,9 @@ router.post('/login', function (req, res) {
     });
 });
 router.get('/register', function (req, res) {
-    res.render('register');
+    res.render('register',{
+        title:"注册Everyone"
+    });
 });
 router.post('/register', function (req, res) {
     var name = req.body.name,
@@ -100,8 +109,12 @@ router.post('/register', function (req, res) {
 router.get('/logout', function (req, res) {
     req.session.user=null;
     res.render("logout",{
+        title:"登出",
         user:req.session.user
     });
+});
+router.post('/post',function(req,res){
+
 });
 router.get('/blog', function (req, res) {
     res.render('blog');
