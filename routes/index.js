@@ -1,37 +1,71 @@
 /*
- * GET home page.
+ * Set Route.
  */
 var express = require('express');
 var crypto = require('crypto');
 var router = express.Router();
 var User = require('../modules/users.js');
+var Post = require('../modules/posts.js');
 var ejs = require('ejs');
+//检查是否已登录
+var chkLogin=function(req){
+    if(req.session.user){
+        return true;
+    }else{
+        return false;
+    }
+};
+
+//获取主页
 router.get("/", function (req, res) {
-    console.log(req.session);
-    res.render('index',{
-        title:"Everyone",
-        user:req.session.user
-    });
+    if (chkLogin(req)) {
+        res.render('./logined/index.ejs', {
+            title: "Everyone",
+            user: req.session.user
+        });
+    } else {
+        res.render('./nologin/index.ejs', {
+            title: "Everyone"
+        });
+    }
 });
 /*router.get('/login', function (req, res,next) {
-    if(req.session.user){
-        return res.redirect("back");
+ if(req.session.user){
+ return res.redirect("back");
+ }
+ next();
+ });*/
+
+//重定向
+router.get('/redirect', function (req, res) {
+    if(chkLogin(req)){
+        res.render('redirect', {
+            title: "重定向中...",
+            loginStatus: "已登录",
+            redirectLink: "/",
+            address: "主页"
+        });
+    }else{
+        res.render('redirect',{
+            title: "重定向中...",
+            loginStatus: "未登录",
+            redirectLink: "/login",
+            address: "登录页"
+        })
     }
-    next();
-});*/
-router.get('/redirect',function(req,res){
-    res.render('redirect',{
-        title:"Everyone"
-    });
 });
-router.get("/login",function(req,res){
-    if(req.session.user){
+
+//获取登录页面
+router.get("/login", function (req, res) {
+    if (chkLogin(req)) {
         return res.redirect('redirect');
     }
-    res.render("login",{
-        title:"登录Everyone"
+    res.render("./nologin/login", {
+        title: "登录Everyone"
     });
 });
+
+//登录页中点击登录
 router.post('/login', function (req, res) {
     //生成密码的 md5 值
     var md5 = crypto.createHash('md5'),
@@ -51,11 +85,20 @@ router.post('/login', function (req, res) {
         res.redirect('/');//登陆成功后跳转到主页
     });
 });
+
+//获取到注册页面
 router.get('/register', function (req, res) {
-    res.render('register',{
-        title:"注册Everyone"
-    });
+    if(chkLogin(req)){
+        res.redirect('redirect');
+    }else{
+        res.render('./nologin/register', {
+            title: "注册Everyone"
+        });
+    }
+
 });
+
+//注册页中点击注册
 router.post('/register', function (req, res) {
     var name = req.body.name,
         id = req.body.id,
@@ -96,31 +139,57 @@ router.post('/register', function (req, res) {
                 //req.flash('error', err);
                 return res.redirect('/register');//注册失败返回主册页
             }
-            console.log("newUser:"+user);
-            console.log("req.session(Before):"+req.sessions);
+            /*console.log("newUser:"+user);
+             console.log("req.session(Before):"+req.sessions);*/
             req.session.user = user;//用户信息存入 session
-            console.log("req.session(After):"+req.sessions);
+            //console.log("req.session(After):"+req.sessions);
             //req.session.messages = ['success', '注册成功!'];
             //req.flash('success', '注册成功!');
             res.redirect('/');//注册成功后返回主页
         });
     });
 });
+
+//登出
 router.get('/logout', function (req, res) {
-    req.session.user=null;
-    res.render("logout",{
-        title:"登出",
-        user:req.session.user
-    });
-});
-router.post('/post',function(req,res){
+    if(chkLogin(req)){
+        req.session.user = null;
+        res.render("logout", {
+            title: "登出",
+            user: req.session.user
+        });
+    }else{
+        return res.redirect('redirect');
+    }
 
 });
-router.get('/blog', function (req, res) {
-    res.render('blog');
+
+//获取到全部的已发送状态
+router.get('/post',function(req,res){
+    if(chkLogin(req)){
+        res.render('./logined/post',{
+            title: "发送状态",
+            user: req.session.user
+        });
+    }else{
+        res.redirect('redirect');
+    }
 });
+
+//发送状态请求
+router.post('/post', function (req, res) {
+    console.log("Begin post");
+
+});
+
+//获取用户信息
 router.get('/profile', function (req, res) {
-    res.render('blog');
+    res.render('./logined/blog');
+});
+
+//测试
+router.post('/test', function (req, res) {
+    res.send("test_OK");
 });
 
 module.exports = router;

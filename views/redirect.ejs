@@ -1,7 +1,6 @@
 <% include header.ejs %>
-<% if %>
-<h1>您已登录，正在返回<a href="/">主页</a></h1>
+<h1>您<%= loginStatus %>，正在返回 <a href="<%= redirectLink %>"><%= address %></a></h1>
 <script>
-    document.location="/";
+    document.location = "<%= redirectLink %>";
 </script>
 <% include footer.ejs %>
