@@ -221,7 +221,6 @@ router.get('/data', function (req, res) {
                 res.send(err);
             }
             if(postcollection){
-                var length=postcollection.length;
                 postcollection.forEach(function (element,i) {
                     delete postcollection[i]._id;
                 });

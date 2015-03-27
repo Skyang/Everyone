@@ -13,9 +13,14 @@
     <div class="post">发表状态</div>
 
 </div>
-<div class="container">
-
-</div>
+<section class="container">
+    <label for="object">标题</label>
+    <input type="text" id="object" name="object" placeholder="输入标题"/>
+    <label for="content">内容</label>
+    <input type="text" id="content" name="content" placeholder="输入正文"/>
+    <input type="button" value="发布" id="submit"/>
+    <input type="button" value="取消" id="cancel"/>
+</section>
 <script src="/js/lib/jquery-1.9.1.min.js"></script>
 <script src="/js/post.js"></script>
 <% include ../footer.ejs %>
