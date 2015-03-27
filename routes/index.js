@@ -179,16 +179,68 @@ router.get('/post',function(req,res){
 //发送状态请求
 router.post('/post', function (req, res) {
     console.log("Begin post");
-
+    var name =req.session.user.name,
+        id=req.session.user.id,
+        object=req.body.object,
+        content=req.body.content;
+    var newPost=new Post({
+        name:name,
+        id:id,
+        object:object,
+        content:content
+    });
+    newPost.save(function (err, post) {
+        if (err) {
+            return res.redirect('/post');//发送失败返回发送页
+        }
+        res.send("success");  //发表成功后返回主页;
+    });
 });
 
 //获取用户信息
 router.get('/profile', function (req, res) {
-    res.render('./logined/blog');
+    if(chkLogin(req)){
+        res.render('./logined/profile',{
+            title: "个人资料"
+        });
+    }else{
+        res.redirect('redirect');
+    }
 });
 
+//获取用户已发送的状态
+router.get('/data', function (req, res) {
+    if(chkLogin(req)){
+        var id=req.session.user.id;
+        var postsCollection=new Post({
+            id:id
+        });
+        postsCollection.getById(id, function (err, postcollection) {
+            if(err){
+                console.log(err);
+                res.send(err);
+            }
+            if(postcollection){
+                var length=postcollection.length;
+                postcollection.forEach(function (element,i) {
+                    delete postcollection[i]._id;
+                });
+                /*for(var i=0;i<length;i++){
+                    delete postcollection[i]._id;
+                }*/
+                res.send(postcollection);
+            }
+        })
+    }
+});
+
+//获取好友界面
+router.get('/friend', function (req, res) {
+
+});
 //测试
 router.post('/test', function (req, res) {
+    console.log(req.body);
     res.send("test_OK");
 });
 

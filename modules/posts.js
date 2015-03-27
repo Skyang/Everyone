@@ -6,8 +6,8 @@ var mongodb = require('./db');
 function Post(post) {
     this.name = post.name;
     this.id = post.id;
-    this.time = post.time;
-    this.post = post.post;
+    this.object = post.object;
+    this.content = post.content;
 }
 
 module.exports = Post;
@@ -29,9 +29,9 @@ Post.prototype.save = function (callback) {
         name: this.name,
         id: this.id,
         time: time,
-        post: this.post
+        object : this.object,
+        content : this.content
     };
-    console.log("Post.save:" + post);
     //打开数据库
     mongodb.open(function (err, db) {
         if (err) {
@@ -58,7 +58,7 @@ Post.prototype.save = function (callback) {
 };
 
 //读取发送的状态信息
-Post.getById = function (id, callback) {
+Post.prototype.getById = function (id, callback) {
     //打开数据库
     mongodb.open(function (err, db) {
         if (err) {
@@ -70,15 +70,15 @@ Post.getById = function (id, callback) {
                 mongodb.close();
                 return callback(err);//错误，返回 err 信息
             }
-            //查找登录名值为 id 一个文档
-            collection.findOne({
-                id: id
-            }, function (err, post) {
+            //查找登录名值为 id 文档
+            collection.find({
+                id:id
+            }).toArray(function(err,postcollection){
                 mongodb.close();
                 if (err) {
                     return callback(err);//失败！返回 err 信息
                 }
-                callback(null, post);//成功！返回查询的用户信息
+                callback(null,postcollection);
             });
         });
     });
