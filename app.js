@@ -13,6 +13,12 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var favicon = require('serve-favicon');
 var routes = require('./routes/index');
+var testRoute=require('./routes/test');
+var regRoutes=require('./routes/register');
+var logRoutes=require('./routes/login');
+var postRoutes=require('./routes/post');
+var friendRoutes=require('./routes/friend');
+
 var app = express();
 
 // all environments
@@ -38,6 +44,11 @@ app.use(session({
 }));
 
 app.use('/', routes);
+app.use('/', testRoute);
+app.use('/', regRoutes);
+app.use('/', logRoutes);
+app.use('/', postRoutes);
+app.use('/', friendRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
