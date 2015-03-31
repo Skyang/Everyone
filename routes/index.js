@@ -8,10 +8,10 @@ var User = require('../modules/users.js');
 var Post = require('../modules/posts.js');
 var ejs = require('ejs');
 //检查是否已登录
-var chkLogin=function(req){
-    if(req.session.user){
+var chkLogin = function (req) {
+    if (req.session.user) {
         return true;
-    }else{
+    } else {
         return false;
     }
 };
@@ -38,15 +38,15 @@ router.get("/", function (req, res) {
 
 //重定向
 router.get('/redirect', function (req, res) {
-    if(chkLogin(req)){
+    if (chkLogin(req)) {
         res.render('redirect', {
             title: "重定向中...",
             loginStatus: "已登录",
             redirectLink: "/",
             address: "主页"
         });
-    }else{
-        res.render('redirect',{
+    } else {
+        res.render('redirect', {
             title: "重定向中...",
             loginStatus: "未登录",
             redirectLink: "/login",
@@ -88,9 +88,9 @@ router.post('/login', function (req, res) {
 
 //获取到注册页面
 router.get('/register', function (req, res) {
-    if(chkLogin(req)){
+    if (chkLogin(req)) {
         res.redirect('redirect');
-    }else{
+    } else {
         res.render('./nologin/register', {
             title: "注册Everyone"
         });
@@ -152,26 +152,26 @@ router.post('/register', function (req, res) {
 
 //登出
 router.get('/logout', function (req, res) {
-    if(chkLogin(req)){
+    if (chkLogin(req)) {
         req.session.user = null;
         res.render("logout", {
             title: "登出",
             user: req.session.user
         });
-    }else{
+    } else {
         return res.redirect('redirect');
     }
 
 });
 
 //获取到全部的已发送状态
-router.get('/post',function(req,res){
-    if(chkLogin(req)){
-        res.render('./logined/post',{
+router.get('/post', function (req, res) {
+    if (chkLogin(req)) {
+        res.render('./logined/post', {
             title: "发送状态",
             user: req.session.user
         });
-    }else{
+    } else {
         res.redirect('redirect');
     }
 });
@@ -179,15 +179,15 @@ router.get('/post',function(req,res){
 //发送状态请求
 router.post('/post', function (req, res) {
     console.log("Begin post");
-    var name =req.session.user.name,
-        id=req.session.user.id,
-        object=req.body.object,
-        content=req.body.content;
-    var newPost=new Post({
-        name:name,
-        id:id,
-        object:object,
-        content:content
+    var name = req.session.user.name,
+        id = req.session.user.id,
+        object = req.body.object,
+        content = req.body.content;
+    var newPost = new Post({
+        name: name,
+        id: id,
+        object: object,
+        content: content
     });
     newPost.save(function (err, post) {
         if (err) {
@@ -199,43 +199,49 @@ router.post('/post', function (req, res) {
 
 //获取用户信息
 router.get('/profile', function (req, res) {
-    if(chkLogin(req)){
-        res.render('./logined/profile',{
+    if (chkLogin(req)) {
+        res.render('./logined/profile', {
             title: "个人资料"
         });
-    }else{
+    } else {
         res.redirect('redirect');
     }
 });
 
 //获取用户已发送的状态
 router.get('/data', function (req, res) {
-    if(chkLogin(req)){
-        var id=req.session.user.id;
-        var postsCollection=new Post({
-            id:id
+    if (chkLogin(req)) {
+        var id = req.session.user.id;
+        var postsCollection = new Post({
+            id: id
         });
         postsCollection.getById(id, function (err, postcollection) {
-            if(err){
+            if (err) {
                 console.log(err);
                 res.send(err);
             }
-            if(postcollection){
-                postcollection.forEach(function (element,i) {
-                    delete postcollection[i]._id;
-                });
-                /*for(var i=0;i<length;i++){
-                    delete postcollection[i]._id;
-                }*/
-                res.send(postcollection);
-            }
+            /*if (postcollection) {
+             postcollection.forEach(function (element, i) {
+             delete postcollection[i]._id;
+             });*/
+            /*for(var i=0;i<length;i++){
+             delete postcollection[i]._id;
+             }*/
+            res.send(postcollection);
+            //}
         })
     }
 });
 
 //获取好友界面
 router.get('/friend', function (req, res) {
-
+    if (chkLogin(req)) {
+        res.render('./logined/friend', {
+            title: "朋友列表"
+        });
+    } else {
+        res.redirect('redirect');
+    }
 });
 //测试
 router.post('/test', function (req, res) {

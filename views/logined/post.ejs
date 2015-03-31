@@ -1,6 +1,6 @@
 <% include ../header.ejs %>
 <div class="header">
-    <p>欢迎来到Everyone</p>
+    <h1>欢迎来到Everyone</h1>
 
     <div class="log logSuccess">
         <div class="avatar"><a href="profile"><%= user.name %></a></div>
@@ -16,8 +16,10 @@
 <section class="container">
     <label for="object">标题</label>
     <input type="text" id="object" name="object" placeholder="输入标题"/>
+    <br/>
     <label for="content">内容</label>
-    <input type="text" id="content" name="content" placeholder="输入正文"/>
+    <textarea id="content" placeholder="输入正文" name="content"></textarea>
+    <br/>
     <input type="button" value="发布" id="submit"/>
     <input type="button" value="取消" id="cancel"/>
 </section>
