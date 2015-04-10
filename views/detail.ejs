@@ -1,0 +1,16 @@
+<% include header.ejs %>
+
+<p>
+<h2><%= post.object %></h2>
+</p>
+<p class="info">
+    作者：<%= post.name %>
+    日期：<%= post.time.minute %>
+</p>
+<p>
+    <%= post.content %>
+</p>
+
+<script src="/js/lib/jquery-1.9.1.min.js"></script>
+<script src="/js/detail.js"></script>
+<% include footer.ejs %>

@@ -2,7 +2,6 @@
  * Set Route.
  */
 var express = require('express');
-var crypto = require('crypto');
 var router = express.Router();
 var User = require('../modules/users.js');
 var ejs = require('ejs');
@@ -50,7 +49,6 @@ router.get('/redirect', function (req, res) {
 
 //测试
 router.post('/test', function (req, res) {
-    console.log(req.body);
     res.send("test_OK");
 });
 
