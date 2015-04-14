@@ -1,4 +1,6 @@
 <% include header.ejs %>
+</head>
+<body>
 <h1>您<%= loginStatus %>，正在返回 <a href="<%= redirectLink %>"><%= address %></a></h1>
 <script>
     document.location = "<%= redirectLink %>";

@@ -18,7 +18,7 @@ var regRoutes=require('./routes/register');
 var logRoutes=require('./routes/login');
 var postRoutes=require('./routes/post');
 var friendRoutes=require('./routes/friend');
-
+var profileRoutes=require('./routes/profile');
 var app = express();
 
 // all environments
@@ -49,6 +49,7 @@ app.use('/', regRoutes);
 app.use('/', logRoutes);
 app.use('/', postRoutes);
 app.use('/', friendRoutes);
+app.use('/',profileRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
