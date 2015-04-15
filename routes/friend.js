@@ -2,6 +2,7 @@
 var express = require('express');
 var friend = express.Router();
 var User = require('../modules/users.js');
+var Friend = require('../modules/friends.js');
 var ejs = require('ejs');
 
 var chkLogin = function (req) {
@@ -20,6 +21,14 @@ friend.get('/friend', function (req, res) {
         });
     } else {
         res.redirect('redirect');
+    }
+});
+
+//添加好友
+friend.post('/friend/addFollowing/:following_id', function (req, res) {
+    if (chkLogin(req)) {
+        var current_id = req.session.user.id;
+        var following_id = req.params.following_id;
     }
 });
 
