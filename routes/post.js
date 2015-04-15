@@ -64,9 +64,13 @@ post.get('/data', function (req, res) {
 });
 
 //获取单个post详情
-post.get('/:user/:_id', function (req, res) {
+post.get('/:user/:_id', function (req, res,next) {
     console.log(req.params);//通过req.params.user,req.params.id访问
     var userId = req.params.user, _id = req.params._id;
+    //判断是否格式正确，若不正确，执行下一个路由
+    if (!(_id.length == 24 && (/[a-z0-9A-Z]/g).test(_id))) {
+        next();
+    }
     var queryPost = new Post({});
     queryPost.getByPid(userId, _id, function (err, postcollection) {
         if (err) {
@@ -77,7 +81,7 @@ post.get('/:user/:_id', function (req, res) {
             console.log("Loaded!");
             console.log(postcollection[0].name);
             res.render('./detail.ejs', {
-                post:postcollection[0],
+                post: postcollection[0],
                 title: req.session.user.name
             });
         } else {
@@ -87,7 +91,9 @@ post.get('/:user/:_id', function (req, res) {
             });
         }
     });
-
+});
+post.get('/:test/:test2', function (req, res) {
+    res.send("Next页面!");
 });
 
 module.exports = post;

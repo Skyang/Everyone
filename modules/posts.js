@@ -102,7 +102,8 @@ Post.prototype.getByPid = function (userId,_id, callback) {
             }
             //查找 _id 为 id 文档
             collection.find({
-                "_id":new ObjectID(_id)
+                "_id":new ObjectID(_id),
+                "id":userId
             }).toArray(function(err,postcollection){
                 console.log("post: "+postcollection);
                 mongodb.close();
