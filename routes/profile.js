@@ -16,7 +16,8 @@ var chkLogin = function (req) {
 profile.get('/profile', function (req, res) {
     if (chkLogin(req)) {
         res.render('./logined/profile', {
-            title: "个人资料"
+            title: "个人资料",
+            user: req.session.user
         });
     } else {
         res.redirect('redirect');

@@ -17,7 +17,8 @@ var chkLogin = function (req) {
 friend.get('/friend', function (req, res) {
     if (chkLogin(req)) {
         res.render('./logined/friend', {
-            title: "好友列表"
+            title: "好友列表",
+            user: req.session.user
         });
     } else {
         res.redirect('redirect');
