@@ -48,28 +48,17 @@ register.post('/register', function (req, res) {
     //检查用户名是否已经存在
     User.getById(newUser.id, function (err, user) {
         if (err) {
-            //req.session.messages = ['error', err];
-            //req.flash('error', err);
             return res.redirect('/');
         }
         if (user) {
-            //req.session.messages = ['error', '用户已存在!'];
-            //req.flash('error', '用户已存在!');
             return res.redirect('/register');//返回注册页
         }
         //如果不存在则新增用户
         newUser.save(function (err, user) {
             if (err) {
-                //req.session.messages = ['error', err];
-                //req.flash('error', err);
                 return res.redirect('/register');//注册失败返回主册页
             }
-            /*console.log("newUser:"+user);
-             console.log("req.session(Before):"+req.sessions);*/
             req.session.user = user;//用户信息存入 session
-            //console.log("req.session(After):"+req.sessions);
-            //req.session.messages = ['success', '注册成功!'];
-            //req.flash('success', '注册成功!');
             res.redirect('/');//注册成功后返回主页
         });
     });
