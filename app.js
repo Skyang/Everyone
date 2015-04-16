@@ -5,7 +5,8 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var settings = require('./settings');
+var settings = require('./config/settings');
+var config = require('./config/config');
 var logger = require('morgan');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
@@ -13,12 +14,12 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var favicon = require('serve-favicon');
 var routes = require('./routes/index');
-var testRoute=require('./routes/test');
-var regRoutes=require('./routes/register');
-var logRoutes=require('./routes/login');
-var postRoutes=require('./routes/post');
-var friendRoutes=require('./routes/friend');
-var profileRoutes=require('./routes/profile');
+var testRoute = require('./routes/test');
+var regRoutes = require('./routes/register');
+var logRoutes = require('./routes/login');
+var postRoutes = require('./routes/post');
+var friendRoutes = require('./routes/friend');
+var profileRoutes = require('./routes/profile');
 var app = express();
 
 // all environments
@@ -28,7 +29,9 @@ app.set('view engine', 'ejs');
 app.use(favicon(__dirname + '/public/images/icon.png'));
 app.use(bodyParser.json());            //json、urlencoded这两行
 app.use(bodyParser.urlencoded({extended: false}));    // 相当于以前的app.use(express.bodyParser())
-app.use(express.static(path.join(__dirname, 'public')));    //设置根目录下的public为存放images,js,css等静态文件的文件夹
+app.use(express.static(path.join(__dirname, 'public'), {
+    maxAge: 31536000000
+}));    //设置根目录下的public为存放images,js,css等静态文件的文件夹
 app.use(cookieParser());
 app.use(session({
     secret: settings.cookieSecret,
@@ -43,13 +46,22 @@ app.use(session({
     saveUninitialized: true
 }));
 
+/*var setExpries = function (req, res, next) {
+    var expires = new Date();
+    expires.setTime(expires.getTime() + 3600 * 24 * 365 * 1000);
+    res.set({
+        "Cache-Control": "max-age=31536000000",
+        "Expries": expires.toUTCString()
+    });
+    next();
+};*/
 app.use('/', routes);
 app.use('/', testRoute);
 app.use('/', regRoutes);
 app.use('/', logRoutes);
 app.use('/', postRoutes);
 app.use('/', friendRoutes);
-app.use('/',profileRoutes);
+app.use('/', profileRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
