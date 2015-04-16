@@ -40,15 +40,19 @@ Friend.prototype.init = function (callback) {
     });
 };
 
-Friend.prototype.save = function (callback) {
+Friend.prototype.saveFolower = function (currentId, targetId, callback) {
     //要存入数据库的用户好友文档
     var friend = {
         id: this.id,
         following: this.following,
         follower: this.follower
     };
-    console.log("Friend.id.save:" + id);
-    if (this.getById(id)) {
+    var insertNew = function (currentId, targetId, friends) {
+        console.log(friends);
+    };
+    if (this.getById(currentId, function (currentId, targetId, friends) {
+            insertNew(currentId, targetId, friends);
+        })) {
         console.log("Existed!")
     }
     //打开数据库

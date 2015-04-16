@@ -1,20 +1,8 @@
 <% include ../header.ejs %>
 </head>
 <body>
-<div class="header">
-    <h1>欢迎来到Everyone</h1>
+<% include ./navigator.ejs %>
 
-    <div class="log logSuccess">
-        <div class="avatar"><a href="profile"><%= user.name %></a></div>
-        <!--
-                    预备加入个人信息页面
-        -->
-        <div class="logout"><a href="logout">登出</a></div>
-    </div>
-    <div class="index"><a href="/">首页</a></div>
-    <div class="post">发表状态</div>
-
-</div>
 <section class="container">
     <label for="object">标题</label>
     <input type="text" id="object" name="object" placeholder="输入标题"/>

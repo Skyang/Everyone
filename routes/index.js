@@ -17,8 +17,6 @@ var chkLogin = function (req) {
 //获取主页
 router.get("/", function (req, res) {
     if (chkLogin(req)) {
-        console.log(req.headers);
-        console.log("test cache");
         res.render('./logined/index.ejs', {
             title: "Everyone",
             user: req.session.user

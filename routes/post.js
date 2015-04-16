@@ -27,7 +27,6 @@ post.get('/post', function (req, res) {
 
 //发送状态请求
 post.post('/post', function (req, res) {
-    console.log("Begin post");
     var name = req.session.user.name,
         id = req.session.user.id,
         object = req.body.object,
@@ -55,7 +54,6 @@ post.get('/data', function (req, res) {
         });
         postsCollection.getById(id, function (err, postcollection) {
             if (err) {
-                console.log(err);
                 res.send(err);
             }
             res.send(postcollection);
@@ -65,7 +63,7 @@ post.get('/data', function (req, res) {
 
 //获取单个post详情
 post.get('/:user/:_id', function (req, res,next) {
-    console.log(req.params);//通过req.params.user,req.params.id访问
+    //console.log(req.params);//通过req.params.user,req.params.id访问
     var userId = req.params.user, _id = req.params._id;
     //判断是否格式正确，若不正确，执行下一个路由
     if (!(_id.length == 24 && (/[a-z0-9A-Z]/g).test(_id))) {
@@ -74,12 +72,9 @@ post.get('/:user/:_id', function (req, res,next) {
     var queryPost = new Post({});
     queryPost.getByPid(userId, _id, function (err, postcollection) {
         if (err) {
-            console.log(err);
             res.send(err);
         }
         if (postcollection.length && postcollection.length != 0) {
-            console.log("Loaded!");
-            console.log(postcollection[0].name);
             res.render('./detail.ejs', {
                 post: postcollection[0],
                 title: req.session.user.name
