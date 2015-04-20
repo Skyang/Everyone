@@ -20,7 +20,7 @@ var logRoutes = require('./routes/login');
 var postRoutes = require('./routes/post');
 var friendRoutes = require('./routes/friend');
 var profileRoutes = require('./routes/profile');
-var userRoute=require('./routes/users');
+var userRoute=require('./routes/home');
 var app = express();
 
 // all environments

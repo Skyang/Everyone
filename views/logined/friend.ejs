@@ -4,13 +4,17 @@
 <% include navigator.ejs %>
 <h2>Friends</h2>
 <div id="friendList" ng-app="friendListApp">
+    
+    <h3><a href="/friend">所有好友</a></h3>
     <ul id="allFriend" ng-controller="allFriendCtrl">
         <!--基础Friend列表显示格式-->
         <li ng-repeat="friend in friends">
             <div class="friendDetail">
                 <div class="avatar"></div>
                 <p><a href="/u/{{ friend.id }}">{{ friend.name }}</a></p>
+<!--
                 <p> ->已关注 || <-关注了我 | <->相互关注 </p>
+-->
                 <p>TA的关注：
                     <span>
                         <a href="/u/{{ friend.id }}/following">{{ friend.followingCount }}</a>
@@ -24,11 +28,52 @@
             </div>
         </li>
     </ul>
-    <ul id="followerList" ng-controller="follwerListCtrl"></ul>
-    <ul id="followingList" ng-controller="followingListCtrl"></ul>
+
+    <h3><a href="/friend/following">我的关注</a></h3>
+    <ul id="followingList" ng-controller="followingListCtrl">
+        <li ng-repeat="friend in friends">
+            <div class="friendDetail">
+                <div class="avatar"></div>
+                <p><a href="/u/{{ friend.id }}">{{ friend.name }}</a></p>
+                <p>TA的关注：
+                    <span>
+                        <a href="/u/{{ friend.id }}/following">{{ friend.followingCount }}</a>
+                    </span>
+                </p>
+                <p>TA的好友：
+                    <span>
+                        <a href="/u/{{ friend.id }}/follower">{{ friend.followerCount }}</a>
+                    </span>
+                </p>
+            </div>
+        </li>
+    </ul>
+
+    <h3><a href="/friend/follower">关注我的</a></h3>
+    <ul id="followerList" ng-controller="follwerListCtrl">
+        <li ng-repeat="friend in friends">
+            <div class="friendDetail">
+                <div class="avatar"></div>
+                <p><a href="/u/{{ friend.id }}">{{ friend.name }}</a></p>
+                <p>TA的关注：
+                    <span>
+                        <a href="/u/{{ friend.id }}/following">{{ friend.followingCount }}</a>
+                    </span>
+                </p>
+                <p>TA的好友：
+                    <span>
+                        <a href="/u/{{ friend.id }}/follower">{{ friend.followerCount }}</a>
+                    </span>
+                </p>
+            </div>
+        </li>
+    </ul>
+
+
 </div>
 <script src="/js/lib/jquery-1.9.1.min.js"></script>
-<script src="/js/lib/angular-1.3.15/angular.js"></script>
+<script src="/js/lib/angular-1.3.15/angular.min.js"></script>
+<script src="/js/lib/angular-1.3.15/angular-route.min.js"></script>
 <script src="/js/lib/bootstrap.min.js"></script>
 <script src="/js/friend.js"></script>
 <% include ../footer.ejs %>

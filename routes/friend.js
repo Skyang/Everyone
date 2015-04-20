@@ -25,6 +25,26 @@ friend.get('/friend', function (req, res) {
     }
 });
 
+//获取好友数据
+friend.post('/friend/getAllFriend', function (req, res) {
+    if(chkLogin(req)){
+        var userId=req.session.user.id;
+        var queryFriend=new Friend({});
+        queryFriend.saveFolower(userId,"test", function (err, friend) {
+            if (err) {
+                res.send(err);
+            }
+            res.send(friend);
+        });
+        /*queryFriend.getById(userId, function (err, friend) {
+            if (err) {
+                res.send(err);
+            }
+            res.send(friend);
+        })*/
+    }
+});
+
 //添加好友
 friend.post('/friend/addFollowing/:following_id', function (req, res) {
     if (chkLogin(req)) {
