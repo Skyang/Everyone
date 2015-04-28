@@ -40,26 +40,25 @@ Friend.prototype.init = function (callback) {
     });
 };
 
-var save
-
+//保存关注者，回调用到
 Friend.prototype.saveFollower = function (currentId, targetId, callback) {
     //打开数据库
     mongodb.open(function (err, db) {
         if (err) {
             return callback(err);//错误，返回 err 信息
         }
-        //读取 users 集合
+        //读取 friends 集合
         db.collection('friends', function (err, collection) {
             if (err) {
                 mongodb.close();
                 return callback(err);//错误，返回 err 信息
             }
-            //将用户数据插入 friends 集合
+            //将用户新关注 push 到 friends 集合
             collection.update({
                 id: currentId
             }, {
                 $push: {
-                    follower:targetId
+                    follower: targetId
                 }
             }, function (err, friend) {
                 mongodb.close();
@@ -68,6 +67,77 @@ Friend.prototype.saveFollower = function (currentId, targetId, callback) {
                 }
                 callback(null, friend);//成功！err 为 null，并返回存储后的用户文档
             });
+        });
+    });
+};
+
+//删除一个关注
+Friend.prototype.deleteFollower = function (currentId, targetId, callback) {
+    var needToModify;
+    //打开数据库
+    mongodb.open(function (err, db) {
+        if (err) {
+            return callback(err);//错误，返回 err 信息
+        }
+        //读取 friends 集合
+        db.collection('friends', function (err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);//错误，返回 err 信息
+            }
+            collection.find({
+                id:currentId
+            }).toArray(function (err, friends) {
+                if (err) {
+                    return callback(err);//失败！返回 err 信息
+                }
+                needToModify=friends[0].follower;
+                //在数组中删除特定的一项targetId
+                var index=needToModify.indexOf(targetId);
+                if(index<0){
+                    return callback(err);
+                }
+                needToModify.splice(index,1);
+                collection.update({"id":currentId},
+                    {
+                        $set:
+                        {
+                            follower:needToModify
+                        }
+                    }, function (err, friend) {
+                        mongodb.close();
+                        if (err) {
+                            return callback(err);//错误，返回 err 信息
+                        }
+                        callback(null, friend);
+                    });
+            });
+
+            /*collection.find({
+                id: id
+            }).toArray(function (data) {
+                var followerArr=data.follower;
+                var index=followerArr.indexOf(targetId);
+                console.log("followerArr"+followerArr);
+                if(index<0){
+                    return callback(err);
+                }
+                followerArr=followerArr.splice(index,1);
+                data.follower=followerArr;
+                collection.update({
+                    id: currentId
+                }, {
+                    $set: {
+                        follower: followerArr
+                    }
+                }, function (err, friend) {
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);//错误，返回 err 信息
+                    }
+                    callback(null, friend);//成功！err 为 null，并返回存储后的用户文档
+                });
+            });*/
         });
     });
 };

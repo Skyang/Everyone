@@ -30,26 +30,54 @@ friend.post('/friend/getAllFriend', function (req, res) {
     if(chkLogin(req)){
         var userId=req.session.user.id;
         var queryFriend=new Friend({});
-        queryFriend.saveFolower(userId,"test", function (err, friend) {
+        /*queryFriend.saveFollower(userId,"test", function (err, friend) {
             if (err) {
                 res.send(err);
             }
             res.send(friend);
-        });
-        /*queryFriend.getById(userId, function (err, friend) {
+        });*/
+        queryFriend.getById(userId, function (err, friend) {
             if (err) {
                 res.send(err);
             }
+            console.log(friend);
             res.send(friend);
-        })*/
+        })
     }
 });
 
 //添加好友
-friend.post('/friend/addFollowing/:following_id', function (req, res) {
+friend.post(/\/friend\/addFollowing/, function (req, res) {
     if (chkLogin(req)) {
         var current_id = req.session.user.id;
-        var following_id = req.params.following_id;
+        var following_id = req.query.following_id;
+        var queryFriend=new Friend({});
+        queryFriend.saveFollower(current_id,following_id, function (err, friend) {
+            if(err){
+                res.send(err);
+            }
+            console.log("Save Success!");
+            console.log(friend);
+            res.send(friend);
+        });
+    }
+});
+
+//删除好友
+friend.post(/\/friend\/deleteFollowing/, function (req, res) {
+    if (chkLogin(req)) {
+        var current_id = req.session.user.id;
+        var following_id = req.query.following_id;
+        var queryFriend=new Friend({});
+        queryFriend.deleteFollower(current_id,following_id, function (err, friend) {
+            if(err){
+                res.send(err);
+            }
+            console.log("Delete Success!");
+            console.log("Friend is..");
+            console.log(friend);
+            res.send(friend);
+        });
     }
 });
 
