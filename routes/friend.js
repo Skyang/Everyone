@@ -25,7 +25,7 @@ friend.get('/friend', function (req, res) {
 });
 
 //获取好友数据
-friend.post('/friend/getAllFriend', function (req, res) {
+friend.get('/friend/getAllFriend', function (req, res) {
     if(chkLogin(req)){
         var userId=req.session.user.id;
         /*queryFriend.saveFollowing(userId,"test", function (err, friend) {

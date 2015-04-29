@@ -9,7 +9,7 @@ userinfo.get('/getFollowingUserInfo', function (req, res) {
         return res.send("Error");
     }
     userIds=userIds.split(",");
-    var userInfo = {};
+    var userInfo = [];
     var i = 0;
     var queryInfo = function (i, userIds) {
         if (i >= userIds.length) {
@@ -19,7 +19,7 @@ userinfo.get('/getFollowingUserInfo', function (req, res) {
             if (!user) {
                 return "Query Error";
             }
-            userInfo[i] = user;
+            userInfo.push(user);
             console.log(userInfo);
             i++;
             queryInfo(i, userIds);
@@ -34,7 +34,7 @@ userinfo.get('/getFollowerUserInfo', function (req, res) {
         return res.send("Error");
     }
     userIds=userIds.split(",");
-    var userInfo = {};
+    var userInfo = [];
     var i = 0;
     var queryInfo = function (i, userIds) {
         if (i >= userIds.length) {
@@ -44,7 +44,7 @@ userinfo.get('/getFollowerUserInfo', function (req, res) {
             if (!user) {
                 return "Query Error";
             }
-            userInfo[i] = user;
+            userInfo.push(user);
             console.log(userInfo);
             i++;
             queryInfo(i, userIds);

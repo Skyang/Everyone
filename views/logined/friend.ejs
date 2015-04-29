@@ -1,35 +1,41 @@
 <% include ../header.ejs %>
 <link rel="stylesheet" href=""/>
 </head>
-<body ng-app="friendListApp">
+<body>
 <% include navigator.ejs %>
 <header>
     <h3><a href="/friend/following">我的关注</a></h3>
 
     <h3><a href="/friend/follower">关注我的</a></h3>
 </header>
-<div id="friendList" ng-controller="mainCtrl">
+<div id="friendList">
     <!--我的关注-->
-    <ul id="followingList">
-        <li ng-repeat="friend in followingList">
+    <ul id="followingList" ng-app="friendListApp" ng-controller="followingListCtrl">
+        <li ng-repeat="followingList in followingLists">
             <div class="friendDetail">
                 <div class="avatar"></div>
-                <p><a href="/u/{{ friend }}">{{ friend.name }}</a></p>
+                <p><a href=''>
+                        <span ng-bind="followingList.id"></span>
+                    </a></p>
                 <p>TA的关注：
                     <span>
-                        <a href="/u/{{ friend }}">{{ friend.followingCount }}</a>
+                        <a href="/u/{{ followingList.id }}">
+                            <span ng-bind="followingList.following.length"></span>
+                        </a>
                     </span>
                 </p>
-                <p>TA的好友：
+                <p>关注TA的：
                     <span>
-                        <a href="/u/{{ friend }}">{{ friend.followerCount }}</a>
+                        <a href="/u/{{ followingList.id }}">
+                            <span ng-bind="followingList.follower.length"></span>
+                        </a>
                     </span>
                 </p>
             </div>
         </li>
     </ul>
 
-    <!--关注我的-->
+   <!-- &lt;!&ndash;关注我的&ndash;&gt;
     <ul id="followerList">
         <li ng-repeat="friend in followerList">
             <div class="friendDetail">
@@ -49,7 +55,7 @@
                 </p>
             </div>
         </li>
-    </ul>
+    </ul>-->
 </div>
 <script src="/js/lib/jquery-1.9.1.min.js"></script>
 <script src="/js/lib/angular-1.3.15/angular.js"></script>
