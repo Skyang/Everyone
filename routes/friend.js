@@ -30,7 +30,7 @@ friend.post('/friend/getAllFriend', function (req, res) {
     if(chkLogin(req)){
         var userId=req.session.user.id;
         var queryFriend=new Friend({});
-        /*queryFriend.saveFollower(userId,"test", function (err, friend) {
+        /*queryFriend.saveFollowing(userId,"test", function (err, friend) {
             if (err) {
                 res.send(err);
             }
@@ -52,7 +52,7 @@ friend.post(/\/friend\/addFollowing/, function (req, res) {
         var current_id = req.session.user.id;
         var following_id = req.query.following_id;
         var queryFriend=new Friend({});
-        queryFriend.saveFollower(current_id,following_id, function (err, friend) {
+        queryFriend.saveFollowing(current_id,following_id, function (err, friend) {
             if(err){
                 res.send(err);
             }
@@ -66,13 +66,13 @@ friend.post(/\/friend\/addFollowing/, function (req, res) {
     }
 });
 
-//删除好友
+//删除关注
 friend.post(/\/friend\/deleteFollowing/, function (req, res) {
     if (chkLogin(req)) {
         var current_id = req.session.user.id;
         var following_id = req.query.following_id;
         var queryFriend=new Friend({});
-        queryFriend.deleteFollower(current_id,following_id, function (err, friend) {
+        queryFriend.deleteFollowing(current_id,following_id, function (err, friend) {
             if(err){
                 res.send(err);
             }

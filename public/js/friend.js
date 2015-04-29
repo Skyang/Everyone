@@ -11,6 +11,36 @@ friendListApp.controller('mainCtrl', ['$scope', '$http',
                 console.log(data);
             })
     }]);
+
+var operateFriend = {
+    //新增好友
+    addFollowing: function (targetId) {
+        $.ajax({
+            type: "POST",
+            url: '/friend/addFollowing?following_id=' + targetId,
+            success: function (data) {
+                console.log(data);
+            },
+            fail: function (data) {
+                console.log(data);
+            }
+        });
+    },
+
+    //删除好友
+    deleteFollowing: function (targetId) {
+        $.ajax({
+            type: "POST",
+            url: '/friend/deleteFollowing?following_id=' + targetId,
+            success: function (data) {
+                console.log(data);
+            },
+            fail: function (data) {
+                console.log(data);
+            }
+        });
+    }
+};
 //不知道哪里出的问题，路由模板不显示，作废不用angular路由
 /*friendListApp.config(['$routeProvider', function($routeProvider) {
  $routeProvider.
@@ -40,31 +70,3 @@ friendListApp.controller('mainCtrl', ['$scope', '$http',
  console.log(data);
  }
  });*/
-
-//新增好友test
-var addFollowing= function (targetId) {
-    $.ajax({
-        type: "POST",
-        url: '/friend/addFollowing?following_id='+targetId,
-        success: function (data) {
-            console.log(data);
-        },
-        fail: function (data) {
-            console.log(data);
-        }
-    });
-};
-
-//删除好友
-var deleteFollowing= function (targetId) {
-    $.ajax({
-        type: "POST",
-        url: '/friend/deleteFollowing?following_id='+targetId,
-        success: function (data) {
-            console.log(data);
-        },
-        fail: function (data) {
-            console.log(data);
-        }
-    });
-};

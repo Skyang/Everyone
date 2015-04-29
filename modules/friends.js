@@ -12,8 +12,8 @@ module.exports = Friend;
 Friend.prototype.init = function (callback) {
     var friend = {
         id: this.id,
-        following: [],
-        follower: []
+        following: [],  //following字段表示该用户正在关注的用户
+        follower: []    //follower字段表示该用户被关注的用户
     };
     //打开数据库
     mongodb.open(function (err, db) {
@@ -41,7 +41,7 @@ Friend.prototype.init = function (callback) {
 };
 
 //保存关注者，回调用到
-Friend.prototype.saveFollower = function (currentId, targetId, callback) {
+Friend.prototype.saveFollowing = function (currentId, targetId, callback) {
     //打开数据库
     mongodb.open(function (err, db) {
         if (err) {
@@ -60,20 +60,28 @@ Friend.prototype.saveFollower = function (currentId, targetId, callback) {
                 if (err) {
                     return callback(err);//失败！返回 err 信息
                 }
-                var index = friends[0].follower.indexOf(targetId);
+                var index = friends[0].following.indexOf(targetId);
                 if (index < 0) {
                     collection.update({
                         id: currentId
                     }, {
                         $push: {
-                            follower: targetId
+                            following: targetId
                         }
                     }, function (err, friend) {
-                        mongodb.close();
-                        if (err) {
-                            return callback(err);//错误，返回 err 信息
-                        }
-                        callback(null, friend);//成功！err 为 null，并返回存储后的用户文档
+                        collection.update({
+                            id: targetId
+                        }, {
+                            $push: {
+                                follower: currentId
+                            }
+                        }, function (err, friend) {
+                            mongodb.close();
+                            if (err) {
+                                return callback(err);//错误，返回 err 信息
+                            }
+                            callback(null, friend);//成功！err 为 null，并返回存储后的用户文档
+                        })
                     });
                 } else {
                     mongodb.close();
@@ -85,8 +93,8 @@ Friend.prototype.saveFollower = function (currentId, targetId, callback) {
 };
 
 //删除一个关注
-Friend.prototype.deleteFollower = function (currentId, targetId, callback) {
-    var needToModify;
+Friend.prototype.deleteFollowing = function (currentId, targetId, callback) {
+    var needToModify, targetToModify;
     //打开数据库
     mongodb.open(function (err, db) {
         if (err) {
@@ -104,7 +112,7 @@ Friend.prototype.deleteFollower = function (currentId, targetId, callback) {
                 if (err) {
                     return callback(err);//失败！返回 err 信息
                 }
-                needToModify = friends[0].follower;
+                needToModify = friends[0].following;
                 //在数组中删除特定的一项targetId
                 var index = needToModify.indexOf(targetId);
                 if (index < 0) {
@@ -114,15 +122,38 @@ Friend.prototype.deleteFollower = function (currentId, targetId, callback) {
                 collection.update({"id": currentId},
                     {
                         $set: {
-                            follower: needToModify
+                            following: needToModify
                         }
-                    }, function (err, friend) {
-                        mongodb.close();
-                        if (err) {
-                            return callback(err);//错误，返回 err 信息
-                        }
-                        callback(null, friend);
-                    });
+                    }, function () {
+                        collection.find({
+                            id: targetId
+                        }).toArray(function (err, targetData) {
+                            if (err) {
+                                return callback(err);//失败！返回 err 信息
+                            }
+                            targetToModify = targetData[0].follower;
+                            //在follower数组中删除特定的一项currentId
+                            var index = targetToModify.indexOf(currentId);
+                            if (index < 0) {
+                                return callback(err);
+                            }
+                            targetToModify.splice(index, 1);
+                            collection.update({"id": targetId},
+                                {
+                                    $set: {
+                                        follower: targetToModify
+                                    }
+                                }, function (err, friend) {
+                                    mongodb.close();
+                                    if (err) {
+                                        return callback(err);//错误，返回 err 信息
+                                    }
+                                    callback(null, friend);
+                                }
+                            );
+                        });
+                    }
+                );
             });
         });
     });
