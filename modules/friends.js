@@ -54,19 +54,33 @@ Friend.prototype.saveFollower = function (currentId, targetId, callback) {
                 return callback(err);//错误，返回 err 信息
             }
             //将用户新关注 push 到 friends 集合
-            collection.update({
-                id: currentId
-            }, {
-                $push: {
-                    follower: targetId
-                }
-            }, function (err, friend) {
-                mongodb.close();
+            collection.find({
+                id: id
+            }).toArray(function (err, friends) {
                 if (err) {
-                    return callback(err);//错误，返回 err 信息
+                    return callback(err);//失败！返回 err 信息
                 }
-                callback(null, friend);//成功！err 为 null，并返回存储后的用户文档
+                var index = friends[0].follower.indexOf(targetId);
+                if (index < 0) {
+                    collection.update({
+                        id: currentId
+                    }, {
+                        $push: {
+                            follower: targetId
+                        }
+                    }, function (err, friend) {
+                        mongodb.close();
+                        if (err) {
+                            return callback(err);//错误，返回 err 信息
+                        }
+                        callback(null, friend);//成功！err 为 null，并返回存储后的用户文档
+                    });
+                } else {
+                    mongodb.close();
+                    callback(null, "Error");
+                }
             });
+
         });
     });
 };
@@ -86,23 +100,22 @@ Friend.prototype.deleteFollower = function (currentId, targetId, callback) {
                 return callback(err);//错误，返回 err 信息
             }
             collection.find({
-                id:currentId
+                id: currentId
             }).toArray(function (err, friends) {
                 if (err) {
                     return callback(err);//失败！返回 err 信息
                 }
-                needToModify=friends[0].follower;
+                needToModify = friends[0].follower;
                 //在数组中删除特定的一项targetId
-                var index=needToModify.indexOf(targetId);
-                if(index<0){
+                var index = needToModify.indexOf(targetId);
+                if (index < 0) {
                     return callback(err);
                 }
-                needToModify.splice(index,1);
-                collection.update({"id":currentId},
+                needToModify.splice(index, 1);
+                collection.update({"id": currentId},
                     {
-                        $set:
-                        {
-                            follower:needToModify
+                        $set: {
+                            follower: needToModify
                         }
                     }, function (err, friend) {
                         mongodb.close();
@@ -112,32 +125,6 @@ Friend.prototype.deleteFollower = function (currentId, targetId, callback) {
                         callback(null, friend);
                     });
             });
-
-            /*collection.find({
-                id: id
-            }).toArray(function (data) {
-                var followerArr=data.follower;
-                var index=followerArr.indexOf(targetId);
-                console.log("followerArr"+followerArr);
-                if(index<0){
-                    return callback(err);
-                }
-                followerArr=followerArr.splice(index,1);
-                data.follower=followerArr;
-                collection.update({
-                    id: currentId
-                }, {
-                    $set: {
-                        follower: followerArr
-                    }
-                }, function (err, friend) {
-                    mongodb.close();
-                    if (err) {
-                        return callback(err);//错误，返回 err 信息
-                    }
-                    callback(null, friend);//成功！err 为 null，并返回存储后的用户文档
-                });
-            });*/
         });
     });
 };

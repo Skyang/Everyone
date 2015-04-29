@@ -56,6 +56,9 @@ friend.post(/\/friend\/addFollowing/, function (req, res) {
             if(err){
                 res.send(err);
             }
+            if(friend=="Error"){
+                return res.send("Error");
+            }
             console.log("Save Success!");
             console.log(friend);
             res.send(friend);
