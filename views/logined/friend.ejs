@@ -4,51 +4,25 @@
 <body ng-app="friendListApp">
 <% include navigator.ejs %>
 <header>
-    <h3><a href="/friend">所有好友</a></h3>
-
     <h3><a href="/friend/following">我的关注</a></h3>
 
     <h3><a href="/friend/follower">关注我的</a></h3>
 </header>
 <div id="friendList" ng-controller="mainCtrl">
-    <!--所有好友-->
-    <ul id="allFriend">
-        <!--基础Friend列表显示格式-->
-        <li ng-repeat="friend in friends">
-            <div class="friendDetail">
-                <div class="avatar"></div>
-                <p><a href="/u/{{ friend.id }}">{{ friend.name }}</a></p>
-                <!--
-                                <p> ->已关注 || <-关注了我 | <->相互关注 </p>
-                -->
-                <p>TA的关注：
-                    <span>
-                        <a href="/u/{{ friend.id }}/following">{{ friend.followingCount }}</a>
-                    </span>
-                </p>
-                <p>TA的好友：
-                    <span>
-                        <a href="/u/{{ friend.id }}/follower">{{ friend.followerCount }}</a>
-                    </span>
-                </p>
-            </div>
-        </li>
-    </ul>
-
     <!--我的关注-->
     <ul id="followingList">
-        <li ng-repeat="friend in friends">
+        <li ng-repeat="friend in followingList">
             <div class="friendDetail">
                 <div class="avatar"></div>
-                <p><a href="/u/{{ friend.id }}">{{ friend.name }}</a></p>
+                <p><a href="/u/{{ friend }}">{{ friend.name }}</a></p>
                 <p>TA的关注：
                     <span>
-                        <a href="/u/{{ friend.id }}/following">{{ friend.followingCount }}</a>
+                        <a href="/u/{{ friend }}">{{ friend.followingCount }}</a>
                     </span>
                 </p>
                 <p>TA的好友：
                     <span>
-                        <a href="/u/{{ friend.id }}/follower">{{ friend.followerCount }}</a>
+                        <a href="/u/{{ friend }}">{{ friend.followerCount }}</a>
                     </span>
                 </p>
             </div>
@@ -57,7 +31,7 @@
 
     <!--关注我的-->
     <ul id="followerList">
-        <li ng-repeat="friend in friends">
+        <li ng-repeat="friend in followerList">
             <div class="friendDetail">
                 <div class="avatar"></div>
                 <p><a href="/u/{{ friend.id }}">{{ friend.name }}</a></p>

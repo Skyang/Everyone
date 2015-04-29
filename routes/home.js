@@ -8,7 +8,7 @@ var ejs = require('ejs');
 
 users.get('/u/:id', function (req, res, next) {
     var userId=req.params.id;
-    User.getById(userId,function (err, user) {
+    User.getBasicInfoById(userId,function (err, user) {
         if(err){
             res.send(err);
         }

@@ -2,7 +2,6 @@
 var express = require('express');
 var friend = express.Router();
 var User = require('../modules/users.js');
-var Friend = require('../modules/friends.js');
 var ejs = require('ejs');
 
 var chkLogin = function (req) {
@@ -29,14 +28,13 @@ friend.get('/friend', function (req, res) {
 friend.post('/friend/getAllFriend', function (req, res) {
     if(chkLogin(req)){
         var userId=req.session.user.id;
-        var queryFriend=new Friend({});
         /*queryFriend.saveFollowing(userId,"test", function (err, friend) {
             if (err) {
                 res.send(err);
             }
             res.send(friend);
         });*/
-        queryFriend.getById(userId, function (err, friend) {
+        User.getBasicInfoById(userId, function (err, friend) {
             if (err) {
                 res.send(err);
             }
@@ -51,7 +49,7 @@ friend.post(/\/friend\/addFollowing/, function (req, res) {
     if (chkLogin(req)) {
         var current_id = req.session.user.id;
         var following_id = req.query.following_id;
-        var queryFriend=new Friend({});
+        var queryFriend=new User({});
         queryFriend.saveFollowing(current_id,following_id, function (err, friend) {
             if(err){
                 res.send(err);
@@ -71,7 +69,7 @@ friend.post(/\/friend\/deleteFollowing/, function (req, res) {
     if (chkLogin(req)) {
         var current_id = req.session.user.id;
         var following_id = req.query.following_id;
-        var queryFriend=new Friend({});
+        var queryFriend=new User({});
         queryFriend.deleteFollowing(current_id,following_id, function (err, friend) {
             if(err){
                 res.send(err);

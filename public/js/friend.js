@@ -6,6 +6,12 @@ friendListApp.controller('mainCtrl', ['$scope', '$http',
         $http.post('/friend/getAllFriend').
             success(function (data) {
                 console.log("Get All Friend Success");
+                console.log(data);
+                var followingList=data.following;
+                var followerList=data.follower;
+                operateFriend.getFollowingInfo(followingList, function (data) {
+                    console.log(data);
+                });
             }).
             error(function (data) {
                 console.log(data);
@@ -13,6 +19,32 @@ friendListApp.controller('mainCtrl', ['$scope', '$http',
     }]);
 
 var operateFriend = {
+    //获取关注者信息
+    getFollowingInfo: function (ids,callback) {
+        $.ajax({
+            type: "GET",
+            url: '/getFollowingUserInfo?uids=' + ids,
+            success: function (data) {
+                callback(data);
+            },
+            fail: function (data) {
+                console.log(data);
+            }
+        });
+    },
+    //获取关注自己的用户信息
+    getFollowerInfo: function (ids,callback) {
+        $.ajax({
+            type: "GET",
+            url: '/getFollowerUserInfo?uids=' + ids,
+            success: function (data) {
+                callback(data);
+            },
+            fail: function (data) {
+                console.log(data);
+            }
+        });
+    },
     //新增好友
     addFollowing: function (targetId) {
         $.ajax({

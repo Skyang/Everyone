@@ -20,6 +20,7 @@ var logRoutes = require('./routes/login');
 var postRoutes = require('./routes/post');
 var friendRoutes = require('./routes/friend');
 var profileRoutes = require('./routes/profile');
+var userInfoRoutes = require('./routes/userinfo');
 var userRoute=require('./routes/home');
 var app = express();
 
@@ -64,6 +65,7 @@ app.use('/', postRoutes);
 app.use('/', friendRoutes);
 app.use('/', profileRoutes);
 app.use('/',userRoute);
+app.use('/',userInfoRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
