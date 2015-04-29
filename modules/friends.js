@@ -55,7 +55,7 @@ Friend.prototype.saveFollower = function (currentId, targetId, callback) {
             }
             //将用户新关注 push 到 friends 集合
             collection.find({
-                id: id
+                id: currentId
             }).toArray(function (err, friends) {
                 if (err) {
                     return callback(err);//失败！返回 err 信息
@@ -80,7 +80,6 @@ Friend.prototype.saveFollower = function (currentId, targetId, callback) {
                     callback(null, "Error");
                 }
             });
-
         });
     });
 };
