@@ -17,7 +17,25 @@ friend.get('/friend', function (req, res) {
     if (chkLogin(req)) {
         res.render('./logined/friend', {
             title: "好友列表",
-            user: req.session.user
+            user: req.session.user,
+            followingLink:"javascript:void(0)",
+            followerLink:"/friend/follower",
+            followingDisplay:"",
+            followerDisplay:"none"
+        });
+    } else {
+        res.redirect('redirect');
+    }
+});
+friend.get('/friend/follower', function (req, res) {
+    if (chkLogin(req)) {
+        res.render('./logined/friend', {
+            title: "好友列表",
+            user: req.session.user,
+            followingLink:"/friend",
+            followerLink:"javascript:void(0)",
+            followingDisplay:"none",
+            followerDisplay:""
         });
     } else {
         res.redirect('redirect');
@@ -42,6 +60,7 @@ friend.get('/friend/getAllFriend', function (req, res) {
             res.send(friend);
         })
     }
+    return false;
 });
 
 //添加好友

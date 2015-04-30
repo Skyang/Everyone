@@ -4,19 +4,30 @@
 <body>
 <% include navigator.ejs %>
 <header>
-    <h3><a href="/friend/following">我的关注</a></h3>
+    <h3><a href=<%= followingLink %>>我的关注</a></h3>
 
-    <h3><a href="/friend/follower">关注我的</a></h3>
+    <h3><a href=<%= followerLink %>>关注我的</a></h3>
 </header>
-<div id="friendList">
+<div id="friendList" ng-app="friendListApp">
     <!--我的关注-->
-    <ul id="followingList" ng-app="friendListApp" ng-controller="followingListCtrl">
+    <ul id="followingList" ng-controller="followingListCtrl" style="display: <%= followingDisplay %>">
         <li ng-repeat="followingList in followingLists">
             <div class="friendDetail">
                 <div class="avatar"></div>
-                <p><a href=''>
-                        <span ng-bind="followingList.id"></span>
-                    </a></p>
+                <p><a href='/u/{{ followingList.id }}'>
+                        <span ng-bind="followingList.name"></span>
+                    </a>
+                    <button class="addFollowerBtn" uid="{{ followingList.id }}"
+                            ng-if="!(isFollowed(currentUserFollowing,followingList.id))"
+                            ng-click="addFollowing(followingList)">
+                        关注
+                    </button>
+                    <button class="deleteFollowerBtn" uid="{{ followingList.id }}"
+                            ng-if="isFollowed(currentUserFollowing,followingList.id)"
+                            ng-click="deleteFollowing(followingList)">
+                        取消关注
+                    </button>
+                </p>
                 <p>TA的关注：
                     <span>
                         <a href="/u/{{ followingList.id }}">
@@ -24,6 +35,7 @@
                         </a>
                     </span>
                 </p>
+
                 <p>关注TA的：
                     <span>
                         <a href="/u/{{ followingList.id }}">
@@ -35,27 +47,44 @@
         </li>
     </ul>
 
-   <!-- &lt;!&ndash;关注我的&ndash;&gt;
-    <ul id="followerList">
-        <li ng-repeat="friend in followerList">
+    <!--关注我的-->
+    <ul id="followerList" ng-controller="followerListCtrl" style="display: <%= followerDisplay %>">
+        <li ng-repeat="followerList in followerLists"><!--[{"0":{"id":"test",following:[]}},{"1":{}}]-->
             <div class="friendDetail">
                 <div class="avatar"></div>
-                <p><a href="/u/{{ friend.id }}">{{ friend.name }}</a></p>
-
+                <p>
+                    <a href='/u/{{ followerList.id }}'>
+                        <span ng-bind="followerList.id"></span>
+                    </a>
+                    <button class="addFollowerBtn" uid="{{ followerList.id }}"
+                            ng-if="!(isFollowed(currentUserFollowing,followerList.id))"
+                            ng-click="addFollowing(followerList)">
+                        关注
+                    </button>
+                    <button class="deleteFollowerBtn" uid="{{ followerList.id }}"
+                            ng-if="isFollowed(currentUserFollowing,followerList.id)"
+                            ng-click="deleteFollowing(followerList)">
+                        取消关注
+                    </button>
+                </p>
                 <p>TA的关注：
                     <span>
-                        <a href="/u/{{ friend.id }}/following">{{ friend.followingCount }}</a>
+                        <a href="/u/{{ followerList.id }}">
+                            <span ng-bind="followerList.following.length"></span>
+                        </a>
                     </span>
                 </p>
 
-                <p>TA的好友：
+                <p>关注TA的：
                     <span>
-                        <a href="/u/{{ friend.id }}/follower">{{ friend.followerCount }}</a>
+                        <a href="/u/{{ followerList.id }}">
+                            <span ng-bind="followerList.follower.length"></span>
+                        </a>
                     </span>
                 </p>
             </div>
         </li>
-    </ul>-->
+    </ul>
 </div>
 <script src="/js/lib/jquery-1.9.1.min.js"></script>
 <script src="/js/lib/angular-1.3.15/angular.js"></script>

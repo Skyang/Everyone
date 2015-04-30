@@ -1,17 +1,79 @@
 /*Created by Hysky on 15/3/27.*/
 var friendListApp = angular.module('friendListApp', []);
-friendListApp.controller('followingListCtrl', function ($scope, $http) {
-    $http.get('/friend/getAllFriend').success(function (data) {
-        var followingLists;
-        operateFriend.getFollowingInfo(data.following, function (lists) {
-            followingLists = lists;
+var followingLists, followerLists, currentUserInfo;
+//关于页面的操作写在这里
+var friendPage = {
+    //页面初始化
+    init: function () {
+        friendListApp.controller('followingListCtrl', function ($scope, $http) {
+            $http.get('/friend/getAllFriend').success(function (data) {
+                currentUserInfo = data;
+                operateFriend.getFollowingInfo(data.following, function (lists) {
+                    followingLists = lists;
+                });
+                if (followingLists == "Error") {
+                    return $("#followingList").innerHTML = "你还没有关注任何人...";
+                }
+                console.log("followingLists Before....");
+                console.log(followingLists);
+                //判断该用户是否已在关注列表中
+                $scope.isFollowed= function (arr, str) {
+                    return (arr.indexOf(str)>=0);
+                };
+                $scope.addFollowing= function (target) {
+                    operateFriend.addFollowing(target.id);
+                    followingLists.push(target);
+                };
+                $scope.deleteFollowing= function (target) {
+                    operateFriend.deleteFollowing(target.id);
+                    followingLists.splice(followingLists.indexOf(target),1);
+                };
+                console.log("followingLists After...");
+                console.log(followingLists);
+                $scope.followingLists = followingLists;
+                $scope.currentUserFollowing = currentUserInfo.following;//["test"]
+            }).error(function (data) {
+                console.log(data);
+            })
         });
-        $scope.followingLists = followingLists;
-    }).error(function (data) {
-        console.log(data);
-    })
-});
-
+        friendListApp.controller('followerListCtrl', function ($scope, $http) {
+            $http.get('/friend/getAllFriend').success(function (data) {
+                currentUserInfo = data;
+                operateFriend.getFollowerInfo(data.follower, function (lists) {
+                    followerLists = lists;
+                });
+                if (followerLists == "Error") {
+                    console.log("followerList Error");
+                    return $("#followerList").innerHTML = "还没有人关注你...";
+                }
+                console.log("followerLists Before....");
+                console.log(followerLists);
+                $scope.isFollowed= function (arr, str) {
+                    return (arr.indexOf(str)>=0);
+                };
+                $scope.addFollowing= function (target) {
+                    operateFriend.addFollowing(target.id);
+                    currentUserInfo.following.push(target.id);
+                };
+                $scope.deleteFollowing= function (target) {
+                    operateFriend.deleteFollowing(target.id);
+                    currentUserInfo.following
+                        .splice(currentUserInfo.following.indexOf(target.id),1);
+                };
+                console.log("followerLists After...");
+                console.log(followerLists);
+                $scope.followerLists = followerLists;
+                $scope.currentUserFollowing = currentUserInfo.following;
+            }).error(function (data) {
+                console.log(data);
+            })
+        });
+    },
+    refresh: function () {
+        this.init();
+    }
+};
+//关于操作好友的方法写在这里
 var operateFriend = {
     //获取关注者信息
     getFollowingInfo: function (ids, callback) {
@@ -19,10 +81,8 @@ var operateFriend = {
             type: "GET",
             url: '/getFollowingUserInfo?uids=' + ids,
             //要同步请求，否则angular加载会出错
-            async:false,
+            async: false,
             success: function (data) {
-                console.log("Callback(data)");
-                console.log(data);
                 callback(data);
             },
             fail: function (data) {
@@ -35,8 +95,9 @@ var operateFriend = {
         $.ajax({
             type: "GET",
             url: '/getFollowerUserInfo?uids=' + ids,
-            async:false,
+            async: false,
             success: function (data) {
+                console.log(data);
                 callback(data);
             },
             fail: function (data) {
@@ -71,6 +132,8 @@ var operateFriend = {
         });
     }
 };
+
+friendPage.init();
 /*var str = '<ul id="followingList" ng-app="friendListApp" ng-controller="followingListCtrl">' +
  '<li ng-repeat="followingList in followingLists">' +
  '<div class="friendDetail">' +

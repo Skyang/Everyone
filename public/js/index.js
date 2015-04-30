@@ -4,7 +4,7 @@ var str = '<section id="posts" ng-app="postsApp" ng-controller="postsController"
     '<li ng-repeat="post in posts"> ' +
     '<p><h2><a href="/{{ post.id }}/{{ post._id }}">{{ post.object }}</a></h2></p>' +
     '<p class="info">' +
-    '作者：<a href="/{{ post.id }}">{{ post.name }}</a>' +
+    '作者：<a href="/u/{{ post.id }}">{{ post.name }}</a>' +
     '日期：{{ post.time.minute }}</p>' +
     '<p>{{ post.content }}</p>' +
     '</li>' +
