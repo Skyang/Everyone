@@ -14,7 +14,7 @@ $(document).ready(function () {
                     comment: comment
                 },
                 success: function (data) {
-                    location.reload();
+                    location.replace(location.href);
                     console.log(data);
                 },
                 fail: function (data) {
