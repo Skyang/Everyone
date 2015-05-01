@@ -27,6 +27,9 @@ post.get('/post', function (req, res) {
 
 //发送状态请求
 post.post('/post', function (req, res) {
+    if(!chkLogin(req)){
+        return false;
+    }
     var name = req.session.user.name,
         id = req.session.user.id,
         object = req.body.object,
@@ -62,7 +65,7 @@ post.get('/data', function (req, res) {
 });
 
 //获取单个post详情
-post.get('/:user/:_id', function (req, res,next) {
+post.get('/:user/:_id', function (req, res, next) {
     //console.log(req.params);//通过req.params.user,req.params.id访问
     var userId = req.params.user, _id = req.params._id;
     //判断是否格式正确，若不正确，执行下一个路由
@@ -77,7 +80,8 @@ post.get('/:user/:_id', function (req, res,next) {
         if (postcollection.length && postcollection.length != 0) {
             res.render('./detail.ejs', {
                 post: postcollection[0],
-                title: req.session.user.name
+                title: "Detail",
+                user: req.session.user
             });
         } else {
             res.render('error', {
@@ -86,6 +90,20 @@ post.get('/:user/:_id', function (req, res,next) {
             });
         }
     });
+});
+
+//发表评论
+post.post('/post/submitComment', function (req, res) {
+    if(!chkLogin(req)){
+        return false;
+    }
+    var commentUserID=req.session.user.id;
+    var comment=req.body.comment;
+    var _pid=req.body.pid;
+    var queryPost = new Post({});
+    queryPost.saveComment(_pid,commentUserID,comment, function () {
+        res.send("Comment Success");
+    })
 });
 
 module.exports = post;

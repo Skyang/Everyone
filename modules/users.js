@@ -160,6 +160,7 @@ User.prototype.saveFollowing = function (currentId, targetId, callback) {
                     collection.find({
                         id:targetId
                     }).toArray(function (err, targetData) {
+                        //被关注人id存在时才能操作成功
                         if(targetData[0]){
                             collection.update({
                                 id: currentId
