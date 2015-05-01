@@ -4,8 +4,8 @@ $(document).ready(function () {
     //点击发送评论按钮
     $("#submitComment").click(function () {
             var comment = $("#commentContent").val();
-            var path = location.pathname;
-            var pid = path.replace(/\/\w+\//, "");
+            //从pathname中取出pid
+            var pid = location.pathname.replace(/\/\w+\//, "");
             $.ajax({
                 type: "POST",
                 url: "/post/submitComment",
@@ -14,8 +14,8 @@ $(document).ready(function () {
                     comment: comment
                 },
                 success: function (data) {
+                    //可以使用本地缓存进行刷新操作，比reload快
                     location.replace(location.href);
-                    console.log(data);
                 },
                 fail: function (data) {
                     console.log(data);
@@ -23,4 +23,7 @@ $(document).ready(function () {
             })
         }
     );
+    $("#resetComment").click(function () {
+        $("#commentContent").val("");
+    });
 });
