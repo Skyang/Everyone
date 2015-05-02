@@ -5,8 +5,11 @@ var str = '<section id="posts" ng-app="postsApp" ng-controller="postsController"
     '<p><h2><a href="/{{ post.id }}/{{ post._id }}">{{ post.object }}</a></h2></p>' +
     '<p class="info">' +
     '作者：<a href="/u/{{ post.id }}">{{ post.name }}</a>' +
-    '日期：{{ post.time.minute }}</p>' +
-    '<p>{{ post.content }}</p>' +
+    ' 日期：{{ post.time.minute }}' +
+    ' 评论数：{{ post.comments.length }}' +
+    '</p>' +
+    '<p>{{ post.content }}' +
+    '</p>' +
     '</li>' +
     '</ul>' +
     '</section>';
