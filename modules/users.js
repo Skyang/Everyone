@@ -8,8 +8,8 @@ function User(user) {
     this.id = user.id;
     this.password = user.password;
     this.email = user.email;
-    this.following=[];
-    this.follower=[];
+    this.following = [];
+    this.follower = [];
 }
 
 module.exports = User;
@@ -22,8 +22,8 @@ User.prototype.save = function (callback) {
         id: this.id,
         password: this.password,
         email: this.email,
-        follower:[],
-        following:[]
+        follower: [],
+        following: []
     };
     (function (user) {
         console.log("userSave running...");
@@ -158,10 +158,10 @@ User.prototype.saveFollowing = function (currentId, targetId, callback) {
                 var index = friends[0].following.indexOf(targetId);
                 if (index < 0) {
                     collection.find({
-                        id:targetId
+                        id: targetId
                     }).toArray(function (err, targetData) {
                         //被关注人id存在时才能操作成功
-                        if(targetData[0]){
+                        if (targetData[0]) {
                             collection.update({
                                 id: currentId
                             }, {
@@ -183,7 +183,7 @@ User.prototype.saveFollowing = function (currentId, targetId, callback) {
                                     callback(null, friend);//成功！err 为 null，并返回存储后的用户文档
                                 })
                             });
-                        }else{
+                        } else {
                             mongodb.close();
                             callback(null, "Error");
                         }
@@ -259,6 +259,38 @@ User.prototype.deleteFollowing = function (currentId, targetId, callback) {
                         });
                     }
                 );
+            });
+        });
+    });
+};
+
+//修改姓名(name)，邮箱(email),密码(password)，在updateItem中传入相应的键
+//在updateContent中传入修改后的值
+User.prototype.updateProfile = function (updateProfileData, callback) {
+    mongodb.open(function (err, db) {
+        if (err) {
+            return callback(err);
+        }
+        db.collection('users', function (err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+            //查找登录名值为 id 一个文档
+            collection.update({
+                id: updateProfileData.id
+            }, {
+                $set: {
+                    name: updateProfileData.name,
+                    email: updateProfileData.email,
+                    password: updateProfileData.password
+                }
+            }, function (err, user) {
+                mongodb.close();
+                if (err) {
+                    return callback(err);//失败！返回 err 信息
+                }
+                callback(null, user);//成功！返回查询的用户信息
             });
         });
     });

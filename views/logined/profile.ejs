@@ -1,7 +1,51 @@
 <% include ../header.ejs %>
+<link rel="stylesheet" href="/stylesheets/profile.css"/>
 </head>
 <body>
 <% include ./navigator.ejs %>
 
-<div>Profile</div>
+<h1>Profile</h1>
+<div id="userProfile">
+    <p>ID（登录名）：<span><%= user.id %></span></p>
+    <p>昵称：<span><%= user.name %></span></p>
+    <p>E-Mail：<span><%= user.email %></span></p>
+    <p>
+        我的关注：
+        <span><a href="/friend"><%= user.following.length %></a></span>
+        关注我的：
+        <span><a href="/friend/follower"><%= user.follower.length %></a></span>
+    </p>
+    <button type="button" id="editProfile">编辑</button>
+</div>
+<form id="editingProfile">
+    <label for="updateName">
+        <span>修改昵称</span>
+        <input type="text"  id="updateName"
+               placeholder="输入修改后的昵称" value="<%= user.name %>"/>
+    </label>
+    <br/>
+    <label for="updateEmail">
+        <span>修改E-Mail</span>
+        <input type="text"  id="updateEmail"
+               placeholder="输入修改后的E-Mail" value="<%= user.email %>"/>
+    </label>
+    <br/>
+    <label for="updatePwd">
+        <span>修改密码</span>
+        <input type="password"  id="updatePwd"
+               placeholder="输入密码(不能为空)" value=""/>
+    </label>
+    <br/>
+    <label for="updatePwdRepeat">
+        <span>重复密码</span>
+        <input type="password"  id="updatePwdRepeat"
+               placeholder="重复密码" value=""/>
+    </label>
+    <br/>
+    <button type="button" id="saveProfile">保存</button>
+    <button type="reset" id="cancelEditProfile">取消修改</button>
+</form>
+
+<script src="/js/lib/jquery-1.9.1.min.js"></script>
+<script src="/js/profile.js"></script>
 <% include ../footer.ejs %>
