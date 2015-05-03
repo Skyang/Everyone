@@ -1,0 +1,28 @@
+<% include ./header.ejs %>
+</head>
+<body>
+<div id="searchResultList">
+    <div id="searchResultByID">
+        <p>根据用户ID搜索到的结果</p>
+        <% if(searchResultByID){ %>
+        <p>昵称：<%= searchResultByID.name %></p>
+        <p>ID：<%= searchResultByID.id %></p>
+        <%}else{%>
+        <p>未查找到相关用户</p>
+        <%}%>
+    </div>
+    <div id="searchResultByName">
+        <p>根据用户昵称搜索到的结果</p>
+        <%if(searchResultByName.length>0){
+        for(var i=0;i<searchResultByName.length;i++){%>
+        <p>昵称：<%= searchResultByName[i].name %></p>
+        <p>ID：<%= searchResultByName[i].id %></p>
+        <% }}else{ %>
+        <p>未查找到相关用户</p>
+        <% } %>
+    </div>
+</div>
+<script src="/js/lib/jquery-1.9.1.min.js"></script>
+<script src="/js/lib/bootstrap.min.js"></script>
+<script src="/js/search.js"></script>
+<% include ./footer.ejs %>

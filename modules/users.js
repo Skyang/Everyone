@@ -55,7 +55,7 @@ User.prototype.save = function (callback) {
 };
 
 //读取用户信息
-User.getByName = function (name, callback) {
+User.getBasicInfoByName = function (name, callback) {
     //打开数据库
     mongodb.open(function (err, db) {
         if (err) {
@@ -68,14 +68,18 @@ User.getByName = function (name, callback) {
                 return callback(err);//错误，返回 err 信息
             }
             //查找用户名（name键）值为 name 一个文档
-            collection.findOne({
+            collection.find({
                 name: name
-            }, function (err, user) {
+            }).toArray(function (err, users) {
                 mongodb.close();
                 if (err) {
                     return callback(err);//失败！返回 err 信息
                 }
-                callback(null, user);//成功！返回查询的用户信息
+                for(var i=0;i<users.length;i++){
+                    delete users[i].password;
+                    delete users[i].email;
+                }
+                callback(null, users);
             });
         });
     });
@@ -127,8 +131,10 @@ User.getBasicInfoById = function (id, callback) {
                 if (err) {
                     return callback(err);//失败！返回 err 信息
                 }
-                delete user.password;
-                delete user.email;
+                if(user){
+                    delete user.password;
+                    delete user.email;
+                }
                 callback(null, user);//成功！返回查询的用户信息
             });
         });
