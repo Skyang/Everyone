@@ -98,10 +98,11 @@ post.post('/post/submitComment', function (req, res) {
         return false;
     }
     var commentUserID=req.session.user.id;
+    var commentUserAvatar=req.session.user.avatar;
     var comment=req.body.comment;
     var _pid=req.body.pid;
     var queryPost = new Post({});
-    queryPost.saveComment(_pid,commentUserID,comment, function () {
+    queryPost.saveComment(_pid,commentUserID,commentUserAvatar,comment, function () {
         res.send("Comment Success");
     })
 });

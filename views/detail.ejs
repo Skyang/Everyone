@@ -7,6 +7,7 @@
 <% }else{ %>
 <div class="header">
     <h1>欢迎来到Everyone</h1>
+
     <div class="index"><a href="/">首页</a></div>
     <div class="post"><a href="/login">登录</a></div>
     <div class="friend"><a href="/register">注册</a></div>
@@ -27,12 +28,14 @@
 </div>
 <!--评论区块-->
 <div class="commentZone" id="commentZone">
-    <% for(var i=post.comments.length;i>0;i--){ %>
+    <% for(var i = post.comments.length;i > 0;i--){ %>
     <p>
-        <%= post.comments[i-1].commentUserID %>
-        <%= post.comments[i-1].time.minute %>
+        <img src="<%= post.comments[i - 1].commentUserAvatar %>" alt="Avatar"/>
+        <%= post.comments[i - 1].commentUserID %>
+        <%= post.comments[i - 1].time.minute %>
     </p>
-    <p><%= post.comments[i-1].comment %></p>
+
+    <p><%= post.comments[i - 1].comment %></p>
     <% } %>
 </div>
 <!--发送评论区块-->

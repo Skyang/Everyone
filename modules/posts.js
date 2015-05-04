@@ -118,7 +118,7 @@ Post.prototype.getByPid = function (userId, _id, callback) {
     });
 };
 //_pid为当前页面的post id，commentUserID为当前登录用户ID，comment为评论内容
-Post.prototype.saveComment = function (_pid, commentUserID, comment, callback) {
+Post.prototype.saveComment = function (_pid, commentUserID, commentUserAvatar,comment, callback) {
     var finalComment;
     var date = new Date();
     var time = {
@@ -131,6 +131,7 @@ Post.prototype.saveComment = function (_pid, commentUserID, comment, callback) {
     };
     finalComment = {
         commentUserID:commentUserID,
+        commentUserAvatar:commentUserAvatar,
         comment: comment,
         time: time
     };

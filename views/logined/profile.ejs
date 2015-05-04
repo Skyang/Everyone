@@ -5,10 +5,16 @@
 <% include ./navigator.ejs %>
 
 <h1>Profile</h1>
+
 <div id="userProfile">
+    头像：<img src="<%= user.avatar %>" alt="Avatar"/>
+
     <p>ID（登录名）：<span><%= user.id %></span></p>
+
     <p>昵称：<span><%= user.name %></span></p>
+
     <p>E-Mail：<span><%= user.email %></span></p>
+
     <p>
         我的关注：
         <span><a href="/friend"><%= user.following.length %></a></span>
@@ -17,28 +23,38 @@
     </p>
     <button type="button" id="editProfile">编辑</button>
 </div>
+<form id="updateAvatar" enctype="multipart/form-data"
+      method="post" action="javascript:;" role="form">
+    <p>修改头像：</p>
+    <input type="file" name="files" class="form-control"
+           accept="image/*" id="uploadAvatar"/>
+
+    <p id="avatarProgress"></p>
+    <img id="avatarPreview" style="width: 150px;height: 150px">
+    <button type="button" id="saveAvatar">保存头像</button>
+</form>
 <form id="editingProfile">
     <label for="updateName">
         <span>修改昵称</span>
-        <input type="text"  id="updateName"
+        <input type="text" id="updateName"
                placeholder="输入修改后的昵称" value="<%= user.name %>"/>
     </label>
     <br/>
     <label for="updateEmail">
         <span>修改E-Mail</span>
-        <input type="text"  id="updateEmail"
+        <input type="text" id="updateEmail"
                placeholder="输入修改后的E-Mail" value="<%= user.email %>"/>
     </label>
     <br/>
     <label for="updatePwd">
         <span>修改密码</span>
-        <input type="password"  id="updatePwd"
+        <input type="password" id="updatePwd"
                placeholder="输入密码(不能为空)" value=""/>
     </label>
     <br/>
     <label for="updatePwdRepeat">
         <span>重复密码</span>
-        <input type="password"  id="updatePwdRepeat"
+        <input type="password" id="updatePwdRepeat"
                placeholder="重复密码" value=""/>
     </label>
     <br/>

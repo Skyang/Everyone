@@ -4,16 +4,18 @@
 <body>
 <% include navigator.ejs %>
 <header>
-    <h3><a href=<%= followingLink %>>我的关注</a></h3>
+    <h3><a href="<%= followingLink %>">我的关注</a></h3>
 
-    <h3><a href=<%= followerLink %>>关注我的</a></h3>
+    <h3><a href="<%= followerLink %>">关注我的</a></h3>
 </header>
 <div id="friendList" ng-app="friendListApp">
     <!--我的关注-->
     <ul id="followingList" ng-controller="followingListCtrl" style="display: <%= followingDisplay %>">
         <li ng-repeat="followingList in followingLists">
             <div class="friendDetail">
-                <div class="avatar"></div>
+                <div class="avatar">
+                    <img ng-src="{{ followingList.avatar }}" alt="Avatar"/>
+                </div>
                 <p><a href='/u/{{ followingList.id }}'>
                         <span ng-bind="followingList.name"></span>
                     </a>
@@ -51,7 +53,9 @@
     <ul id="followerList" ng-controller="followerListCtrl" style="display: <%= followerDisplay %>">
         <li ng-repeat="followerList in followerLists"><!--[{"0":{"id":"test",following:[]}},{"1":{}}]-->
             <div class="friendDetail">
-                <div class="avatar"></div>
+                <div class="avatar">
+                    <img ng-src="{{ followerList.avatar }}" alt="Avatar"/>
+                </div>
                 <p>
                     <a href='/u/{{ followerList.id }}'>
                         <span ng-bind="followerList.id"></span>

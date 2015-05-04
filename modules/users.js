@@ -22,6 +22,7 @@ User.prototype.save = function (callback) {
         id: this.id,
         password: this.password,
         email: this.email,
+        avatar:"/images/Avatar/defaultAvatar.png",
         follower: [],
         following: []
     };

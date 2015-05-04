@@ -40,4 +40,54 @@ $(document).ready(function () {
         $("#editingProfile").hide();
         $("#userProfile").show();
     });
+    //点击上传文件按钮
+    var previewReader=new FileReader();
+    $("#uploadAvatar").on("change", function (event) {
+        console.log("this.files");
+        console.log(this.files);
+        console.log("Select Upload Success");
+        var files=event.target.files;
+        console.log(files);
+        if(/image/.test(files[0].type)){
+            previewReader.readAsDataURL(files[0]);
+            previewReader.onprogress=function (event) {
+                if(event.lengthComputable){
+                    $("#avatarProgress").text((event.loaded/event.total)*100+"%");
+                }
+            };
+            previewReader.onerror=function () {
+                $("#avatarProgress").text("载入失败，请重试！");
+                console.log(previewReader.error.code);
+            };
+            previewReader.onload=function () {
+                $("#avatarPreview").show();
+                $("#avatarPreview").attr("src",previewReader.result);
+                console.log(previewReader.result);
+                $("#saveAvatar").show();
+            };
+        }
+    });
+    $("#saveAvatar").click(function (event) {
+        if(!$("#avatarPreview").attr("src")){
+            return false;
+        }
+        var formData=new FormData($("#updateAvatar")[0]);
+        console.log("Save Button Clicked!");
+        $.ajax({
+            url: '/profile/updateAvatar',
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data){
+                console.log('imgUploader upload success, data:', data);
+                location.reload();
+            },
+            error: function(){
+                //$("#spanMessage").html("与服务器通信发生错误");
+            }
+        });
+    });
 });

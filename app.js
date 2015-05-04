@@ -13,6 +13,9 @@ var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var favicon = require('serve-favicon');
+var multipart = require('connect-multiparty');
+var fs = require('fs');
+//路由
 var routes = require('./routes/index');
 var testRoute = require('./routes/test');
 var regRoutes = require('./routes/register');
