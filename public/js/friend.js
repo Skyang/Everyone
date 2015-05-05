@@ -17,16 +17,16 @@ var friendPage = {
                 console.log("followingLists Before....");
                 console.log(followingLists);
                 //判断该用户是否已在关注列表中
-                $scope.isFollowed= function (arr, str) {
-                    return (arr.indexOf(str)>=0);
+                $scope.isFollowed = function (arr, str) {
+                    return (arr.indexOf(str) >= 0);
                 };
-                $scope.addFollowing= function (target) {
+                $scope.addFollowing = function (target) {
                     operateFriend.addFollowing(target.id);
                     followingLists.push(target);
                 };
-                $scope.deleteFollowing= function (target) {
+                $scope.deleteFollowing = function (target) {
                     operateFriend.deleteFollowing(target.id);
-                    followingLists.splice(followingLists.indexOf(target),1);
+                    followingLists.splice(followingLists.indexOf(target), 1);
                 };
                 console.log("followingLists After...");
                 console.log(followingLists);
@@ -48,17 +48,17 @@ var friendPage = {
                 }
                 console.log("followerLists Before....");
                 console.log(followerLists);
-                $scope.isFollowed= function (arr, str) {
-                    return (arr.indexOf(str)>=0);
+                $scope.isFollowed = function (arr, str) {
+                    return (arr.indexOf(str) >= 0);
                 };
-                $scope.addFollowing= function (target) {
+                $scope.addFollowing = function (target) {
                     operateFriend.addFollowing(target.id);
                     currentUserInfo.following.push(target.id);
                 };
-                $scope.deleteFollowing= function (target) {
+                $scope.deleteFollowing = function (target) {
                     operateFriend.deleteFollowing(target.id);
                     currentUserInfo.following
-                        .splice(currentUserInfo.following.indexOf(target.id),1);
+                        .splice(currentUserInfo.following.indexOf(target.id), 1);
                 };
                 console.log("followerLists After...");
                 console.log(followerLists);

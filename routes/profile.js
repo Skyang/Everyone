@@ -67,13 +67,17 @@ profile.post('/profile/updateAvatar', multipart(), function (req, res) {
     //copy file to a public directory
     //注意这里的路径问题否则会报错：Error: ENOENT, open 'path'
     var targetPath = './public/images/Avatar/' + filename;
+    var avatarPath="./images/Avatar/"+filename;
     console.log("targetPath --->");
     console.log(targetPath);
     //copy file
     fs.createReadStream(req.files.files.ws.path).pipe(fs.createWriteStream(targetPath));
     //return file url
-    req.session.user.avatar="./images/Avatar/"+filename;
-    res.send("Success");
+    var tmpUser=new User({});
+    tmpUser.updateAvatar(req.session.user.id,avatarPath, function () {
+        req.session.user.avatar=avatarPath;
+        res.send("Success");
+    });
 });
 
 //这是测试上传文件，以备未来使用维护

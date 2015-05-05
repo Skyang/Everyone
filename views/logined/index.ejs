@@ -2,6 +2,7 @@
 </head>
 <body>
 <% include ./navigator.ejs %>
+<% include ../searchInput.ejs %>
 <div id="postsList">
     <section id="posts" ng-app="postsApp" ng-controller="postsController">
         <ul>
@@ -29,4 +30,5 @@
 <script src="/js/lib/angular-1.3.15/angular.js"></script>
 <script src="/js/lib/bootstrap.min.js"></script>
 <script src="/js/index.js"></script>
+<script src="/js/searchInput.js"></script>
 <% include ../footer.ejs %>

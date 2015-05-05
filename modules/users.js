@@ -302,3 +302,31 @@ User.prototype.updateProfile = function (updateProfileData, callback) {
         });
     });
 };
+
+User.prototype.updateAvatar = function (userID,avatarPath, callback) {
+    mongodb.open(function (err, db) {
+        if (err) {
+            return callback(err);
+        }
+        db.collection('users', function (err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+            //查找登录名值为 id 一个文档
+            collection.update({
+                id: userID
+            }, {
+                $set: {
+                    avatar: avatarPath
+                }
+            }, function (err, user) {
+                mongodb.close();
+                if (err) {
+                    return callback(err);//失败！返回 err 信息
+                }
+                callback(null, user);//成功！返回查询的用户信息
+            });
+        });
+    });
+};
