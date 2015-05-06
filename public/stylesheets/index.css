@@ -1,0 +1,32 @@
+.navbar{
+    margin-bottom: 0;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+}
+#doc{
+    height: 100%;
+}
+#indexCarousel{
+    height: 100%;
+}
+#introduce{
+    position: absolute;
+    top: 20%;
+    left: 15%;
+    width: 32%;
+    color: #FFFFFF;
+    font-size: 2em;
+}
+#account{
+    position: absolute;
+    top: 20%;
+    left: 60%;
+    width: 35%;
+    background: whitesmoke;
+    border: solid 1px #e1e8ed;
+    border-radius: 4px;
+    padding: 12px 10px 8px;
+}
