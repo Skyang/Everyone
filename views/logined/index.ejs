@@ -1,11 +1,13 @@
 <% include ../header.ejs %>
+<link rel="stylesheet" href="/stylesheets/login_index.css"/>
 </head>
 <body>
 <% include ./navigator.ejs %>
+<div id="dataCard"></div>
 <div id="postsList">
     <section id="posts" ng-app="postsApp" ng-controller="postsController">
         <ul>
-            <li ng-repeat="post in posts">
+            <li ng-repeat="post in posts" class="col-sm-5 col-sm-offset-3">
                 <h2>
                     <a href="/{{ post.id }}/{{ post._id }}">
                         <span ng-bind="post.object"></span>

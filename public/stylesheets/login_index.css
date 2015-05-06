@@ -1,0 +1,7 @@
+#posts li{
+    list-style: none;
+    border: solid 1px #e1e8ed;
+    padding: 0 15px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
