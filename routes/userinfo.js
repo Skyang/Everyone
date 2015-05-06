@@ -55,15 +55,19 @@ userinfo.get('/getFollowerUserInfo', function (req, res) {
 
 //搜索用户页面
 userinfo.get('/search', function (req, res) {
+    if (!req.session.user) {
+        return res.redirect("/redirect");
+    }
     var searchInfo = req.query.user;
-    var searchResultByID ;
+    var searchResultByID;
     var searchResultByName = [];
+
     function searchUsers(searchInfo) {
         User.getBasicInfoById(searchInfo, function (err, user) {
             console.log("ID Search Return:");
             console.log(user);
             if (user) {
-                searchResultByID=user;
+                searchResultByID = user;
             }
             console.log("searchResultByID");
             console.log(searchResultByID);
@@ -80,11 +84,13 @@ userinfo.get('/search', function (req, res) {
                 res.render('./search.ejs', {
                     title: "Search Result",
                     searchResultByID: searchResultByID,
-                    searchResultByName: searchResultByName
+                    searchResultByName: searchResultByName,
+                    user: req.session.user
                 });
             });
         });
     }
+
     searchUsers(searchInfo);
 });
 
