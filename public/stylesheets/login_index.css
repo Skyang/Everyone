@@ -8,3 +8,7 @@
 #posts ul{
     padding: 5px;
 }
+
+#loadMore {
+    display: none;
+}

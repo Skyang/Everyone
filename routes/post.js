@@ -27,7 +27,7 @@ post.get('/post', function (req, res) {
 
 //发送状态请求
 post.post('/post', function (req, res) {
-    if(!chkLogin(req)){
+    if (!chkLogin(req)) {
         return false;
     }
     var name = req.session.user.name,
@@ -56,6 +56,23 @@ post.get('/data', function (req, res) {
             id: id
         });
         postsCollection.getById(id, function (err, postcollection) {
+            if (err) {
+                res.send(err);
+            }
+            res.send(postcollection);
+        })
+    }
+});
+
+//用户时间线:
+post.get('/timeline', function (req, res) {
+    if (chkLogin(req)) {
+        var uid = req.session.user.id;
+        var followingList = req.session.user.following;
+        var num = 10;
+        var page = req.query.page - 1;
+        var postsCollection = new Post({});
+        postsCollection.getByTimeline(uid, followingList, num, page, function (err, postcollection) {
             if (err) {
                 res.send(err);
             }
@@ -94,15 +111,15 @@ post.get('/:user/:_id', function (req, res, next) {
 
 //发表评论
 post.post('/post/submitComment', function (req, res) {
-    if(!chkLogin(req)){
+    if (!chkLogin(req)) {
         return false;
     }
-    var commentUserID=req.session.user.id;
-    var commentUserAvatar=req.session.user.avatar;
-    var comment=req.body.comment;
-    var _pid=req.body.pid;
+    var commentUserID = req.session.user.id;
+    var commentUserAvatar = req.session.user.avatar;
+    var comment = req.body.comment;
+    var _pid = req.body.pid;
     var queryPost = new Post({});
-    queryPost.saveComment(_pid,commentUserID,commentUserAvatar,comment, function () {
+    queryPost.saveComment(_pid, commentUserID, commentUserAvatar, comment, function () {
         res.send("Comment Success");
     })
 });

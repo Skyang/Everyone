@@ -89,6 +89,43 @@ Post.prototype.getById = function (id, callback) {
     });
 };
 
+//通过用户id获取其时间线,思路为遍历mongo的posts集合，若id在其关注集合中则读出
+Post.prototype.getByTimeline = function (uid, followingList, num, page, callback) {
+    var queryArray = followingList;
+    if (queryArray.indexOf(uid) < 0) {
+        queryArray.push(uid);
+    }
+    console.log("queryArray--->");
+    console.log(queryArray);
+    //打开数据库
+    mongodb.open(function (err, db) {
+        if (err) {
+            return callback(err);//错误，返回 err 信息
+        }
+        //读取 posts 集合
+        db.collection('posts', function (err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);//错误，返回 err 信息
+            }
+            //查找登录名值为 id 且在用户关注的列表文档，限制一次获取50条信息，按时间倒序排序
+            collection.find({
+                id: {
+                    "$in": queryArray
+                }
+            }).limit(num).skip(page * num).sort({
+                "time": -1
+            }).toArray(function (err, postcollection) {
+                mongodb.close();
+                if (err) {
+                    return callback(err);//失败！返回 err 信息
+                }
+                callback(null, postcollection);
+            });
+        });
+    });
+};
+
 //通过post的_id读取发送的状态信息
 Post.prototype.getByPid = function (userId, _id, callback) {
     //打开数据库
@@ -118,7 +155,7 @@ Post.prototype.getByPid = function (userId, _id, callback) {
     });
 };
 //_pid为当前页面的post id，commentUserID为当前登录用户ID，comment为评论内容
-Post.prototype.saveComment = function (_pid, commentUserID, commentUserAvatar,comment, callback) {
+Post.prototype.saveComment = function (_pid, commentUserID, commentUserAvatar, comment, callback) {
     var finalComment;
     var date = new Date();
     var time = {
@@ -130,8 +167,8 @@ Post.prototype.saveComment = function (_pid, commentUserID, commentUserAvatar,co
         date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
     };
     finalComment = {
-        commentUserID:commentUserID,
-        commentUserAvatar:commentUserAvatar,
+        commentUserID: commentUserID,
+        commentUserAvatar: commentUserAvatar,
         comment: comment,
         time: time
     };
