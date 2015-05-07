@@ -1,12 +1,16 @@
 <% include ../header.ejs %>
-<link rel="stylesheet" href=""/>
 </head>
 <body>
 <% include ./navigator.ejs %>
 <header>
-    <h3><a href="<%= followingLink %>">我的关注</a></h3>
-
-    <h3><a href="<%= followerLink %>">关注我的</a></h3>
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="<%= followingActive %>">
+            <a href="<%= followingLink %>">我的关注</a>
+        </li>
+        <li role="presentation" class="<%= followerActive %>">
+            <a href="<%= followerLink %>">关注我的</a>
+        </li>
+    </ul>
 </header>
 <div id="friendList" ng-app="friendListApp">
     <!--我的关注-->
@@ -14,7 +18,7 @@
         <li ng-repeat="followingList in followingLists">
             <div class="friendDetail">
                 <div class="avatar">
-                    <img ng-src="{{ followingList.avatar }}" alt="Avatar"/>
+                    <img ng-src="../{{ followingList.avatar }}" alt="Avatar"/>
                 </div>
                 <p><a href='/u/{{ followingList.id }}'>
                         <span ng-bind="followingList.name"></span>
@@ -54,7 +58,7 @@
         <li ng-repeat="followerList in followerLists"><!--[{"0":{"id":"test",following:[]}},{"1":{}}]-->
             <div class="friendDetail">
                 <div class="avatar">
-                    <img ng-src="{{ followerList.avatar }}" alt="Avatar"/>
+                    <img ng-src="../{{ followerList.avatar }}" alt="Avatar"/>
                 </div>
                 <p>
                     <a href='/u/{{ followerList.id }}'>
@@ -95,5 +99,4 @@
 <script src="/js/lib/bootstrap.min.js"></script>
 <script src="/js/friend.js"></script>
 <script src="/js/searchInput.js"></script>
-<script src="/js/style.js"></script>
 <% include ../footer.ejs %>

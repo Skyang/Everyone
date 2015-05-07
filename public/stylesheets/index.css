@@ -1,4 +1,4 @@
-.navbar{
+.navbar {
     margin-bottom: 0;
     position: fixed;
     z-index: 1000;
@@ -6,13 +6,19 @@
     right: 0;
     left: 0;
 }
-#doc{
+
+#doc {
     height: 100%;
 }
-#indexCarousel{
-    height: 100%;
+
+#indexCarousel {
+    position: fixed;
+    height: 200%;
+    width: 200%;
+    left: -30%;
 }
-#introduce{
+
+#introduce {
     position: absolute;
     top: 20%;
     left: 15%;
@@ -20,7 +26,8 @@
     color: #FFFFFF;
     font-size: 2em;
 }
-#account{
+
+#account {
     position: absolute;
     top: 20%;
     left: 60%;

@@ -2,7 +2,7 @@
 var express = require('express');
 var userinfo = express.Router();
 var User = require('../modules/users.js');
-
+//获取关注者的全部信息
 userinfo.get('/getFollowingUserInfo', function (req, res) {
     var userIds = req.query.uids;
     if (!userIds) {
@@ -59,15 +59,24 @@ userinfo.get('/search', function (req, res) {
         return res.redirect("/redirect");
     }
     var searchInfo = req.query.user;
-    var searchResultByID;
-    var searchResultByName = [];
+    var followingList = req.session.user.following;
+    console.log(followingList);
+    var searchResultByID = {};
+    var isFollowing = false;
+    var searchResultByName = {};
 
     function searchUsers(searchInfo) {
         User.getBasicInfoById(searchInfo, function (err, user) {
             console.log("ID Search Return:");
             console.log(user);
             if (user) {
-                searchResultByID = user;
+                if (followingList.indexOf(user.id) >= 0) {
+                    isFollowing = true;
+                } else {
+                    isFollowing = false;
+                }
+                searchResultByID.isFollowing = isFollowing;
+                searchResultByID.user = user;
             }
             console.log("searchResultByID");
             console.log(searchResultByID);
@@ -76,7 +85,15 @@ userinfo.get('/search', function (req, res) {
                 console.log(users);
                 if (users) {
                     for (var i = 0; i < users.length; i++) {
-                        searchResultByName.push(users[i]);
+                        if (followingList.indexOf(users[i].id) >= 0) {
+                            isFollowing = true;
+                        } else {
+                            isFollowing = false;
+                        }
+                        searchResultByName[i] = {
+                            isFollowing: isFollowing,
+                            user: users[i]
+                        }
                     }
                 }
                 console.log("searchResultByName");

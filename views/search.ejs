@@ -1,31 +1,53 @@
 <% include ./header.ejs %>
+<style>
+    #searchResultList {
+        border: solid 1px #e1e8ed;
+        border-radius: 5px;
+        padding: 15px;
+    }
+</style>
 </head>
 <body>
 <% include ./logined/navigator.ejs %>
-<div id="searchResultList">
+<div id="searchResultList" class="container">
     <div id="searchResultByID">
-        <p>根据用户ID搜索到的结果</p>
+        <p class="text-success">根据用户ID搜索到的结果</p>
+        <hr/>
         <% if(searchResultByID){ %>
         <div class="searchResultUser">
-            <img src="<%= searchResultByID.avatar %>" alt="Avatar"/>
-            <p>昵称：<%= searchResultByID.name %></p>
-            <p>ID：<%= searchResultByID.id %></p>
+            <img src="<%= searchResultByID.user.avatar %>" class="img-circle"
+                 width="48" height="48" alt="Avatar"/>
+            昵称：<%= searchResultByID.user.name %>
+            ID：<%= searchResultByID.user.id %>
+            <% if(searchResultByID.isFollowing){ %>
+            <button uid="<%= searchResultByID.user.id %>" class="deleteFollowing">取消关注</button>
+            <% }else{ %>
+            <button uid="<%= searchResultByID.user.id %>" class="addFollowing">关注</button>
+            <% } %>
         </div>
-        <%}else{%>
-        <p>未查找到相关用户</p>
-        <%}%>
+        <% }else{ %>
+        <p class="text-danger">未查找到相关用户</p>
+        <% } %>
     </div>
     <div id="searchResultByName">
-        <p>根据用户昵称搜索到的结果</p>
-        <%if(searchResultByName.length>0){
-        for(var i=0;i<searchResultByName.length;i++){%>
+        <p class="text-success">根据用户昵称搜索到的结果</p>
+        <hr/>
+        <% if(Object.keys(searchResultByName).length > 0){
+        for(var i = 0;i < Object.keys(searchResultByName).length;i++){ %>
         <div class="searchResultUser">
-            <img src="<%= searchResultByName[i].avatar %>" alt="Avatar"/>
-            <p>昵称：<%= searchResultByName[i].name %></p>
-            <p>ID：<%= searchResultByName[i].id %></p>
+            <img src="<%= searchResultByName[i].user.avatar %>" alt="Avatar"/>
+
+            <p>昵称：<%= searchResultByName[i].user.name %></p>
+
+            <p>ID：<%= searchResultByName[i].user.id %></p>
+            <% if(searchResultByName[i].isFollowing){ %>
+            <button uid="<%= searchResultByName[i].user.id %>" class="deleteFollowing">取消关注</button>
+            <% }else{ %>
+            <button uid="<%= searchResultByName[i].user.id %>" class="addFollowing">关注</button>
+            <% } %>
         </div>
         <% }}else{ %>
-        <p>未查找到相关用户</p>
+        <p class="text-danger">未查找到相关用户</p>
         <% } %>
     </div>
 </div>

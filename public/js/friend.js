@@ -6,8 +6,11 @@ var friendPage = {
     //页面初始化
     init: function () {
         friendListApp.controller('followingListCtrl', function ($scope, $http) {
+            //先获取到所有的好友
             $http.get('/friend/getAllFriend').success(function (data) {
                 currentUserInfo = data;
+                //再获取关注者的好友信息,取两次原因在于，加好友时是根据ID存储的，但是昵称有可能会改变
+                //要重新获取好友的昵称信息
                 operateFriend.getFollowingInfo(data.following, function (lists) {
                     followingLists = lists;
                 });

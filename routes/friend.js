@@ -21,7 +21,9 @@ friend.get('/friend', function (req, res) {
             followingLink:"javascript:void(0)",
             followerLink:"/friend/follower",
             followingDisplay:"",
-            followerDisplay:"none"
+            followerDisplay:"none",
+            followingActive:"active",
+            followerActive:""
         });
     } else {
         res.redirect('redirect');
@@ -35,7 +37,9 @@ friend.get('/friend/follower', function (req, res) {
             followingLink:"/friend",
             followerLink:"javascript:void(0)",
             followingDisplay:"none",
-            followerDisplay:""
+            followerDisplay:"",
+            followingActive:"",
+            followerActive:"active"
         });
     } else {
         res.redirect('redirect');
@@ -78,7 +82,9 @@ friend.post(/\/friend\/addFollowing/, function (req, res) {
             }
             console.log("Save Success!");
             console.log(friend);
-            res.send(friend);
+            //在session中保存用户已关注的用户信息，以便搜索页面进行操作
+            req.session.user.following.push(following_id);
+            res.json({friend:friend});
         });
     }
 });
@@ -94,9 +100,9 @@ friend.post(/\/friend\/deleteFollowing/, function (req, res) {
                 res.send(err);
             }
             console.log("Delete Success!");
-            console.log("Friend is..");
             console.log(friend);
-            res.send(friend);
+            req.session.user.following.splice(req.session.user.following.indexOf(following_id),1);
+            res.json({friend:friend});
         });
     }
 });
