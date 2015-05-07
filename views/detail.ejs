@@ -1,4 +1,31 @@
 <% include ./header.ejs %>
+<style>
+    .content {
+        border: solid 1px #e1e8ed;
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin-bottom: 3px;
+    }
+
+    .form-group {
+        margin-bottom: 5px;
+    }
+
+    .commentDetail {
+        border-top: solid 1px #e1e8ed;
+        padding: 5px 5px 0;
+    }
+
+    textarea {
+        width: 100%;
+        overflow: auto;
+    }
+
+    #commentDetail {
+        width: 90%;
+        word-break: break-word;
+    }
+</style>
 </head>
 <body>
 <!--Navigator-->
@@ -8,44 +35,76 @@
 <% include ./nologin/navbar.ejs %>
 <% } %>
 <!--文章内容区块-->
-<div class="postContent">
-    <h2><%= post.object %></h2>
+<section id="postContent">
+    <div class="content postContent col-sm-5 col-sm-offset-3">
+        <h2><%= post.object %></h2>
 
-    <p class="info">
-        作者：<%= post.name %>
-        日期：<%= post.time.minute %>
-    </p>
+        <p class="info">
+            作者：<a href="/u/<%= post.id %>"><%= post.name %></a> |
+            发表时间：<%= post.time.minute %>
+        </p>
 
-    <p>
-        <%= post.content %>
-    </p>
-</div>
+        <p>
+            <%= post.content %>
+        </p>
+    </div>
+</section>
 <!--评论区块-->
-<div class="commentZone" id="commentZone">
-    <% for(var i = post.comments.length;i > 0;i--){ %>
-    <p>
-        <img src="../<%= post.comments[i - 1].commentUserAvatar %>" alt="Avatar"/>
-        <%= post.comments[i - 1].commentUserID %>
-        <%= post.comments[i - 1].time.minute %>
-    </p>
+<section class="commentZone" id="commentZone">
+    <div class="content col-sm-5 col-sm-offset-3">
+        <% if(post.comments.length == 0){ %>
+        <p>暂无评论</p>
+        <% }else{ %>
+        <p>所有评论：(共<%= post.comments.length %>条)</p>
+        <% for(var i = post.comments.length;i > 0;i--){ %>
+        <div class="commentDetail">
+            <p>
+                <img src="../<%= post.comments[i - 1].commentUserAvatar %>"
+                     class="img-circle" width="36" height="36" alt="Avatar"/>
+                <a href="/u/<%= post.comments[i - 1].commentUserID %>">
+                    <span class="text-primary">
+                        <%= post.comments[i - 1].commentUserID %>
+                    </span>
+                </a> |
+                <span class="text-muted">
+                    评论时间：<%= post.comments[i - 1].time.minute %>
+                </span>
+            </p>
 
-    <p><%= post.comments[i - 1].comment %></p>
-    <% } %>
-</div>
+            <p class="text-muted pull-right"><%= i %>楼</p>
+
+            <p id="commentDetail">
+                <%= post.comments[i - 1].comment %>
+            </p>
+        </div>
+        <% }} %>
+    </div>
+</section>
 <!--发送评论区块-->
-<div class="postCommment">
-    <% if(user){ %>
-    <div class="addComment">
-        <textarea name="" id="commentContent" cols="30" rows="2" placeholder="请输入评论"></textarea>
-        <button type="button" id="submitComment">提交</button>
-        <button type="reset" id="resetComment">清空</button>
+<section class="postCommment" id="postCommment">
+    <div class="content col-sm-5 col-sm-offset-3">
+        <% if(user){ %>
+        <div class="addComment" role="form">
+            <div class="form-group">
+                <textarea name="" id="commentContent" class=""
+                          placeholder="请输入评论"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="button" id="submitComment"
+                        class="btn btn-primary">提交
+                </button>
+                <button type="reset" id="resetComment"
+                        class="btn btn-default">清空
+                </button>
+            </div>
+        </div>
+        <% }else{ %>
+        <div class="addCommentDisable">
+            请<a href="/login">登录</a>后再发表评论
+        </div>
+        <% } %>
     </div>
-    <% }else{ %>
-    <div class="addCommentDisable">
-        请<a href="/login">登录</a>后再发表评论
-    </div>
-    <% } %>
-</div>
+</section>
 <script src="/js/lib/jquery-1.9.1.min.js"></script>
 <script src="/js/lib/bootstrap.min.js"></script>
 <script src="/js/detail.js"></script>

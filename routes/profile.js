@@ -70,6 +70,7 @@ profile.post('/profile/updateAvatar', multipart(), function (req, res) {
     var avatarPath="./images/Avatar/"+filename;
     console.log("targetPath --->");
     console.log(targetPath);
+    console.log(req.files);
     //copy file
     fs.createReadStream(req.files.files.ws.path).pipe(fs.createWriteStream(targetPath));
     //return file url

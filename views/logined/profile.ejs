@@ -1,66 +1,138 @@
 <% include ../header.ejs %>
 <link rel="stylesheet" href="/stylesheets/profile.css"/>
+<style>
+    #userProfile,#updateAvatar,#editingProfile{
+        border: solid 1px #e1e8ed;
+        border-radius: 5px;
+        padding: 10px;
+    }
+    #editProfile{
+        display: none;
+    }
+    #updateAvatar{
+        overflow: hidden;
+        margin-bottom: 5px;
+    }
+    #updateAvatar div{
+        margin-bottom: 5px;
+    }
+</style>
 </head>
 <body>
 <% include ./navigator.ejs %>
-
-<h1>Profile</h1>
-
-<div id="userProfile">
-    头像：<img src="<%= user.avatar %>" alt="Avatar"/>
-
-    <p>ID（登录名）：<span><%= user.id %></span></p>
-
-    <p>昵称：<span><%= user.name %></span></p>
-
-    <p>E-Mail：<span><%= user.email %></span></p>
-
-    <p>
-        我的关注：
-        <span><a href="/friend"><%= user.following.length %></a></span>
-        关注我的：
-        <span><a href="/friend/follower"><%= user.follower.length %></a></span>
-    </p>
-    <button type="button" id="editProfile">编辑</button>
+<div class="col-sm-5 col-sm-offset-3">
+    <div id="userProfile" class="table-responsive">
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+            <tr>
+                <td>类别</td>
+                <td>信息</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>头像</td>
+                <td><img src="<%= user.avatar %>" width="128" height="128"
+                         alt="Avatar"/></td>
+            </tr>
+            <tr>
+                <td>ID（登录名）</td>
+                <td><%= user.id %></td>
+            </tr>
+            <tr>
+                <td>昵称</td>
+                <td><%= user.name %></td>
+            </tr>
+            <tr>
+                <td>E-Mail</td>
+                <td><%= user.email %></td>
+            </tr>
+            <tr>
+                <td>我的关注</td>
+                <td><a href="/friend"><%= user.following.length %></a></td>
+            </tr>
+            <tr>
+                <td>关注我的</td>
+                <td><a href="/friend/follower"><%= user.follower.length %></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-primary" id="edit">编辑</button>
+    </div>
 </div>
-<form id="updateAvatar" enctype="multipart/form-data"
-      method="post" action="javascript:;" role="form">
-    <p>修改头像：</p>
-    <input type="file" name="files" class="form-control"
-           accept="image/*" id="uploadAvatar"/>
 
-    <p id="avatarProgress"></p>
-    <img id="avatarPreview" style="width: 150px;height: 150px">
-    <button type="button" id="saveAvatar">保存头像</button>
-</form>
-<form id="editingProfile">
-    <label for="updateName">
-        <span>修改昵称</span>
-        <input type="text" id="updateName"
-               placeholder="输入修改后的昵称" value="<%= user.name %>"/>
-    </label>
-    <br/>
-    <label for="updateEmail">
-        <span>修改E-Mail</span>
-        <input type="text" id="updateEmail"
-               placeholder="输入修改后的E-Mail" value="<%= user.email %>"/>
-    </label>
-    <br/>
-    <label for="updatePwd">
-        <span>修改密码</span>
-        <input type="password" id="updatePwd"
-               placeholder="输入密码(不能为空)" value=""/>
-    </label>
-    <br/>
-    <label for="updatePwdRepeat">
-        <span>重复密码</span>
-        <input type="password" id="updatePwdRepeat"
-               placeholder="重复密码" value=""/>
-    </label>
-    <br/>
-    <button type="button" id="saveProfile">保存</button>
-    <button type="reset" id="cancelEditProfile">取消修改</button>
-</form>
+<div class="col-sm-5 col-sm-offset-3" id="editProfile">
+    <div class="" id="updateAvatar">
+        <form enctype="multipart/form-data" id="avatarForm"
+              method="post" action="javascript:;" role="form">
+            <div class="form-group">
+                <label for="uploadAvatar" class="col-sm-3 control-label">修改头像</label>
+                <div class="col-sm-9">
+                    <input type="file" name="files" class="form-control"
+                           accept="image/*" id="uploadAvatar"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="uploadAvatar" class="col-sm-3 control-label">预览</label>
+                <div class="col-sm-9">
+                    <img id="avatarPreview" style="width: 150px;height: 150px">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button type="button" class="btn btn-primary disabled"
+                            id="saveAvatar">保存头像</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="" id="editingProfile">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="updateName" class="col-sm-3 control-label">修改昵称</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="updateName"
+                           name="updateName" placeholder="输入修改后的昵称"
+                           value="<%= user.name %>"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="updateEmail" class="col-sm-3 control-label">修改E-Mail</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="updateEmail"
+                           name="updateEmail" placeholder="输入修改后的E-Mail"
+                           value="<%= user.email %>"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="updatePwd" class="col-sm-3 control-label">修改密码</label>
+                <div class="col-sm-9">
+                    <input type="password" class="form-control" id="updatePwd"
+                           name="updatePwd" placeholder="输入密码(不能为空)" value=""/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="updatePwdRepeat" class="col-sm-3 control-label">重复密码</label>
+                <div class="col-sm-9">
+                    <input type="password" class="form-control" id="updatePwdRepeat"
+                           name="updatePwdRepeat" placeholder="重复密码"
+                           value=""/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button type="button" id="saveProfile"
+                            class="btn btn-primary">保存
+                    </button>
+                    <button type="reset" id="cancelEditProfile"
+                            class="btn btn-default">取消修改
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script src="/js/lib/jquery-1.9.1.min.js"></script>
 <script src="/js/lib/bootstrap.min.js"></script>
