@@ -18,6 +18,9 @@
     left: -30%;
 }
 
+.carousel-inner {
+    width: 150%;
+}
 #introduce {
     position: absolute;
     top: 20%;
@@ -36,4 +39,26 @@
     border: solid 1px #e1e8ed;
     border-radius: 4px;
     padding: 12px 10px 8px;
+}
+
+@media screen and (max-width: 700px) {
+    #introduce {
+        position: absolute;
+        top: 7%;
+        left: 5%;
+        width: 90%;
+        color: #FFFFFF;
+        font-size: 1.1em;
+    }
+
+    #account {
+        position: absolute;
+        top: 31%;
+        left: 5%;
+        width: 90%;
+        background: whitesmoke;
+        border: solid 1px #e1e8ed;
+        border-radius: 4px;
+        padding: 12px 10px 8px;
+    }
 }

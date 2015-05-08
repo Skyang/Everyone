@@ -1,0 +1,52 @@
+<style>
+    #cover {
+        position: relative;
+        height: 75px;
+    }
+
+    #headPic {
+        width: 60px;
+        height: 60px;
+        padding: 3px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        margin-left: -30px;
+    }
+</style>
+<div class="col-sm-10 col-sm-offset-1" id="dataCard">
+    <div style="background-image: url(.{{user.avatar}})" id="cover">
+        <div id="headPic">
+            <img ng-src=../{{user.avatar}} alt="Avatar"
+                 width="60" height="60" class="img-circle"/>
+        </div>
+    </div>
+    <div class=" table-responsive">
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <p>文章</p>
+                </td>
+                <td>
+                    <p>关注</p>
+                </td>
+                <td>
+                    <p>被关注</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p ng-bind="posts.length"></p>
+                </td>
+                <td>
+                    <p ng-bind="user.following.length"></p>
+                </td>
+                <td>
+                    <p ng-bind="user.follower.length"></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
