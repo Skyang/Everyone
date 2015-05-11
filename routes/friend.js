@@ -31,7 +31,7 @@ friend.get('/friend', function (req, res) {
 });
 friend.get('/friend/follower', function (req, res) {
     if (chkLogin(req)) {
-        res.render('./logined/friend', {
+        res.render('./logined/friend_follower', {
             title: "好友列表",
             user: req.session.user,
             followingLink:"/friend",

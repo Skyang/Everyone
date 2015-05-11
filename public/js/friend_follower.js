@@ -5,41 +5,7 @@ var followingLists, followerLists, currentUserInfo;
 var friendPage = {
     //页面初始化
     init: function () {
-        friendListApp.controller('followingListCtrl', function ($scope, $http) {
-            //先获取到所有的好友
-            $http.get('/friend/getAllFriend').success(function (data) {
-                currentUserInfo = data;
-                //再获取关注者的好友信息,取两次原因在于，加好友时是根据ID存储的，但是昵称有可能会改变
-                //要重新获取好友的昵称信息
-                operateFriend.getFollowingInfo(data.following, function (lists) {
-                    followingLists = lists;
-                });
-                if (followingLists == "Error") {
-                    return $("#followingList").innerHTML = "你还没有关注任何人...";
-                }
-                console.log("followingLists Before....");
-                console.log(followingLists);
-                //判断该用户是否已在关注列表中
-                $scope.isFollowed = function (arr, str) {
-                    return (arr.indexOf(str) >= 0);
-                };
-                $scope.addFollowing = function (target) {
-                    operateFriend.addFollowing(target.id);
-                    followingLists.push(target);
-                };
-                $scope.deleteFollowing = function (target) {
-                    operateFriend.deleteFollowing(target.id);
-                    followingLists.splice(followingLists.indexOf(target), 1);
-                };
-                console.log("followingLists After...");
-                console.log(followingLists);
-                $scope.followingLists = followingLists;
-                $scope.currentUserFollowing = currentUserInfo.following;//["test"]
-            }).error(function (data) {
-                console.log(data);
-            })
-        });
-        /*friendListApp.controller('followerListCtrl', function ($scope, $http) {
+        friendListApp.controller('followerListCtrl', function ($scope, $http) {
             $http.get('/friend/getAllFriend').success(function (data) {
                 currentUserInfo = data;
                 operateFriend.getFollowerInfo(data.follower, function (lists) {
@@ -70,7 +36,7 @@ var friendPage = {
             }).error(function (data) {
                 console.log(data);
             })
-         });*/
+        });
     },
     refresh: function () {
         this.init();

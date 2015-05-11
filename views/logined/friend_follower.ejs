@@ -13,39 +13,41 @@
     </ul>
 </header>
 <div id="friendList" ng-app="friendListApp">
-    <!--我的关注-->
-    <ul id="followingList" ng-controller="followingListCtrl" style="display: <%= followingDisplay %>">
-        <li ng-repeat="followingList in followingLists">
+
+    <!--关注我的-->
+    <ul id="followerList" ng-controller="followerListCtrl" style="display: <%= followerDisplay %>">
+        <li ng-repeat="followerList in followerLists"><!--[{"0":{"id":"test",following:[]}},{"1":{}}]-->
             <div class="friendDetail">
                 <div class="avatar">
-                    <img ng-src="../{{ followingList.avatar }}" alt="Avatar"/>
+                    <img ng-src="../{{ followerList.avatar }}" alt="Avatar"/>
                 </div>
-                <p><a href='/u/{{ followingList.id }}'>
-                        <span ng-bind="followingList.name"></span>
+                <p>
+                    <a href='/u/{{ followerList.id }}'>
+                        <span ng-bind="followerList.id"></span>
                     </a>
-                    <button class="addFollowerBtn" uid="{{ followingList.id }}"
-                            ng-if="!(isFollowed(currentUserFollowing,followingList.id))"
-                            ng-click="addFollowing(followingList)">
+                    <button class="addFollowerBtn" uid="{{ followerList.id }}"
+                            ng-if="!(isFollowed(currentUserFollowing,followerList.id))"
+                            ng-click="addFollowing(followerList)">
                         关注
                     </button>
-                    <button class="deleteFollowerBtn" uid="{{ followingList.id }}"
-                            ng-if="isFollowed(currentUserFollowing,followingList.id)"
-                            ng-click="deleteFollowing(followingList)">
+                    <button class="deleteFollowerBtn" uid="{{ followerList.id }}"
+                            ng-if="isFollowed(currentUserFollowing,followerList.id)"
+                            ng-click="deleteFollowing(followerList)">
                         取消关注
                     </button>
                 </p>
                 <p>TA的关注：
                     <span>
-                        <a href="/u/{{ followingList.id }}">
-                            <span ng-bind="followingList.following.length"></span>
+                        <a href="/u/{{ followerList.id }}">
+                            <span ng-bind="followerList.following.length"></span>
                         </a>
                     </span>
                 </p>
 
                 <p>关注TA的：
                     <span>
-                        <a href="/u/{{ followingList.id }}">
-                            <span ng-bind="followingList.follower.length"></span>
+                        <a href="/u/{{ followerList.id }}">
+                            <span ng-bind="followerList.follower.length"></span>
                         </a>
                     </span>
                 </p>
@@ -56,6 +58,6 @@
 <script src="/js/lib/jquery-1.9.1.min.js"></script>
 <script src="/js/lib/angular-1.3.15/angular.js"></script>
 <script src="/js/lib/bootstrap.min.js"></script>
-<script src="/js/friend.js"></script>
+<script src="/js/friend_follower.js"></script>
 <script src="/js/searchInput.js"></script>
 <% include ../footer.ejs %>
