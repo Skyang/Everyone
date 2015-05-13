@@ -15,9 +15,21 @@
         left: 50%;
         margin-left: -30px;
     }
+
+    .nameBox {
+        font-size: 1.4em;
+        text-align: center;
+    }
+
+    #userinfo tr:nth-child(1) td {
+        padding-top: 20px;
+    }
 </style>
 <div class="col-sm-10 col-sm-offset-1" id="dataCard">
     <div style="background-image: url(.{{user.avatar}})" id="cover">
+        <div class="nameBox">
+            <a href="/u/{{user.id}}" title="{{user.name}}">{{user.name}}</a>
+        </div>
         <div id="headPic">
             <img ng-src=../{{user.avatar}} alt="Avatar"
                  width="60" height="60" class="img-circle"/>
@@ -25,44 +37,19 @@
     </div>
 
     <div id="userinfo">
-        <div class="nameBox">
-            <a href="/u/{{user.id}}" title="{{user.name}}">{{user.name}}</a>
+        <div class=" table-responsive">
+            <table class="table table-bordered">
+                <tr>
+                    <td>文章</td>
+                    <td>关注</td>
+                    <td>被关注</td>
+                </tr>
+                <tr>
+                    <td ng-bind="posts.length"></td>
+                    <td ng-bind="user.following.length"></td>
+                    <td ng-bind="user.follower.length"></td>
+                </tr>
+            </table>
         </div>
-        <ul class="">
-            <li><a href="/hhyuestc/profile?rightmod=1&amp;wvr=6&amp;mod=personnumber" class="S_txt1"><strong
-                            node-type="weibo">432</strong><span class="S_txt2">微博</span></a></li>
-            <li>
-                <a href="/2620128677/follow?rightmod=1&amp;wvr=6">
-                    <strong node-type="follow">128</strong><span class="S_txt2">关注</span></a></li>
-            <li><a href="/2620128677/fans?rightmod=1&amp;wvr=6" class="S_txt1"><strong node-type="fans">91</strong><span
-                            class="S_txt2">粉丝</span></a></li>
-        </ul>
-    </div>
-
-    <div class=" table-responsive">
-        <table class="table table-bordered">
-            <tr>
-                <td>
-                    <p>文章</p>
-                </td>
-                <td>
-                    <p>关注</p>
-                </td>
-                <td>
-                    <p>被关注</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p ng-bind="posts.length"></p>
-                </td>
-                <td>
-                    <p ng-bind="user.following.length"></p>
-                </td>
-                <td>
-                    <p ng-bind="user.follower.length"></p>
-                </td>
-            </tr>
-        </table>
     </div>
 </div>
