@@ -23,6 +23,8 @@ User.prototype.save = function (callback) {
         password: this.password,
         email: this.email,
         avatar:"/images/Avatar/defaultAvatar.png",
+        background: "/images/Background/defaultBackground.png",
+        posts: 0,
         follower: [],
         following: []
     };

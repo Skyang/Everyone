@@ -4,7 +4,9 @@ postsApp.controller('postsController', function ($scope, $http) {
     var page = 1;
     $http.get('/timeline?page=' + page).success(function (data) {
         $scope.posts = data;
-        document.getElementById("loadMore").style.display = "inherit";
+        if (data.length > 0) {
+            document.getElementById("loadMore").style.display = "inherit";
+        }
     }).error(function (data) {
         console.log(data);
     });

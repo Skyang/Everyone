@@ -49,12 +49,26 @@ Post.prototype.save = function (callback) {
             //将用户数据插入 posts 集合
             collection.insert(post, {
                 safe: true
-            }, function (err, post) {
-                mongodb.close();
-                if (err) {
-                    return callback(err);//错误，返回 err 信息
-                }
-                callback(null, post[0]);//成功！err 为 null，并返回存储后的用户文档
+            }, function (err, posts) {
+                db.collection('users', function (err, collection) {
+                    if (err) {
+                        mongodb.close();
+                        return callback(err);//错误，返回 err 信息
+                    }
+                    collection.update({"id": post.id},
+                        {
+                            $inc: {
+                                "posts": 1
+                            }
+                        }, function (err, user) {
+                            mongodb.close();
+                            if (err) {
+                                return callback(err);//错误，返回 err 信息
+                            }
+                            callback(null, posts[0]);//成功！err 为 null，并返回存储后的用户文档
+                        }
+                    );
+                });
             });
         });
     });

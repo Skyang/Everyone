@@ -17,10 +17,15 @@ var chkLogin = function (req) {
 //获取主页
 router.get("/", function (req, res) {
     if (chkLogin(req)) {
-        res.render('./logined/index.ejs', {
-            title: "Everyone",
-            user: req.session.user
-        });
+        User.getBasicInfoById(req.session.user.id, function (err, user) {
+            if (err) {
+                res.send(err);
+            }
+            res.render('./logined/index.ejs', {
+                title: "Everyone",
+                user: user
+            });
+        })
     } else {
         res.render('./nologin/index.ejs', {
             title: "Everyone"

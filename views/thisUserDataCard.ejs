@@ -5,8 +5,8 @@
     }
 
     #headPic {
-        width: 60px;
-        height: 60px;
+        width: 66px;
+        height: 66px;
         padding: 3px;
         background: rgba(255, 255, 255, 0.3);
         border-radius: 50%;
@@ -26,12 +26,14 @@
     }
 </style>
 <div class="col-sm-10 col-sm-offset-1" id="dataCard">
-    <div style="background-image: url({{user.background}})" id="cover">
+    <div style="background-image: url(.<%= user.background %>)" id="cover">
         <div class="nameBox">
-            <a href="./u/{{user.id}}" title="{{user.name}}">{{user.name}}</a>
+            <a href="./u/<%= user.id %>" title="<%= user.name %>">
+                <%= user.name %>
+            </a>
         </div>
         <div id="headPic">
-            <img ng-src=../{{user.avatar}} alt="Avatar"
+            <img ng-src=../<%= user.avatar %> alt="Avatar"
                  width="60" height="60" class="img-circle"/>
         </div>
     </div>
@@ -45,9 +47,9 @@
                     <td>被关注</td>
                 </tr>
                 <tr>
-                    <td ng-bind="posts.length"></td>
-                    <td ng-bind="user.following.length"></td>
-                    <td ng-bind="user.follower.length"></td>
+                    <td><%= user.posts %></td>
+                    <td><%= user.following.length %></td>
+                    <td><%= user.follower.length %></td>
                 </tr>
             </table>
         </div>
