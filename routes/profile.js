@@ -19,10 +19,15 @@ var chkLogin = function (req) {
 //获取用户信息
 profile.get('/profile', function (req, res) {
     if (chkLogin(req)) {
-        res.render('./logined/profile', {
-            title: "个人资料",
-            user: req.session.user
-        });
+        User.getBasicInfoById(req.session.user.id, function (err, user) {
+            if (err) {
+                res.send(err);
+            }
+            res.render('./logined/profile', {
+                title: "个人资料",
+                user: user
+            });
+        })
     } else {
         res.redirect('redirect');
     }

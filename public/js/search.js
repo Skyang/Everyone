@@ -30,9 +30,9 @@ $(document).ready(function () {
     };
     $("button").click(function (e) {
         var className=$(this).attr("class");
-        if(className=="addFollowing"){
+        if (className.split(" ").indexOf("addFollowing") > -1) {
             operateFriend.addFollowing($(this).attr("uid"));
-        }else if(className=="deleteFollowing"){
+        } else if (className.split(" ").indexOf("deleteFollowing") > -1) {
             operateFriend.deleteFollowing($(this).attr("uid"));
         }
     })

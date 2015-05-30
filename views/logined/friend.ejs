@@ -21,16 +21,18 @@
 <body>
 <% include ./navigator.ejs %>
 <header>
-    <ul class="nav nav-tabs">
-        <li role="presentation" class="<%= followingActive %>">
-            <a href="<%= followingLink %>">我的关注</a>
-        </li>
-        <li role="presentation" class="<%= followerActive %>">
-            <a href="<%= followerLink %>">关注我的</a>
-        </li>
-    </ul>
+    <div class="container">
+        <ul class="nav nav-pills">
+            <li role="presentation" class="<%= followingActive %>">
+                <a href="<%= followingLink %>">我的关注</a>
+            </li>
+            <li role="presentation" class="<%= followerActive %>">
+                <a href="<%= followerLink %>">关注我的</a>
+            </li>
+        </ul>
+    </div>
 </header>
-<div id="friendList" ng-app="friendListApp">
+<div id="friendList" ng-app="friendListApp" class="container">
     <!--我的关注-->
     <ul id="followingList" ng-controller="followingListCtrl" style="display: <%= followingDisplay %>">
         <li ng-repeat="followingList in followingLists" class="col-sm-4">
